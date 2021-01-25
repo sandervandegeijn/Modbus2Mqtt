@@ -1,0 +1,9 @@
+﻿friendly_name: SmartEVSE controller
+endianness: big-endian #little-endian big-endian
+registers:
+  - name: current
+    unit: A
+    data_type: float
+    start: 0x00A6
+    registers: 1
+    function: write_multiple_holding_registers #read_input_registers read_coil read_discrete_input read_holder_registers write_single_coil write_single_holding_register write_multiple_coils write_multiple_holding_registers

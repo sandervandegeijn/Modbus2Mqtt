@@ -1,0 +1,21 @@
+﻿friendly_name: Eastron SDM120 enery meter
+endianness: big-endian #little-endian big-endian
+registers:
+  - name: voltage
+    unit: V
+    data_type: float
+    start: 0
+    registers: 2
+    function: read_input_registers #read_input_registers read_coil read_discrete_input read_holder_registers write_single_coil write_single_holding_register write_multiple_coils write_multiple_holding_registers
+  - name: current
+    unit: A
+    data_type: float
+    start: 6
+    registers: 2
+    function: read_input_registers
+  - name: active power
+    unit: W
+    data_type: float
+    start: 6
+    registers: 2
+    function: read_input_registers

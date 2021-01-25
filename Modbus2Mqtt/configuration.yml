@@ -1,0 +1,20 @@
+﻿port: COM5
+baudrate: 9600
+databits: 8
+parity: none # none even mark odd space
+stopbits: 1 #0 1 1.5 2
+slaves:
+  - name: eastron_test
+    type: EastronSDM120
+    slave_id: 1
+    polling_interval: 1000 #ms
+  - name: smartevse
+    type: SmartEVSE
+    slave_id: 1
+    polling_interval: 1000 #ms
+mqtt:
+  server: 192.168.2.35
+  port: 1883
+  username: "" 
+  password: ""
+  tls: false

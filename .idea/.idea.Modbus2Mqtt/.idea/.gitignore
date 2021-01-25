@@ -1,0 +1,13 @@
+﻿# Default ignored files
+/shelf/
+/workspace.xml
+# Rider ignored files
+/modules.xml
+/contentModel.xml
+/projectSettingsUpdater.xml
+/.idea.Modbus2Mqtt.iml
+# Datasource local storage ignored files
+/../../../../../../../../:\Users\neo\Source\Modbus2Mqtt\.idea\.idea.Modbus2Mqtt\.idea/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/
