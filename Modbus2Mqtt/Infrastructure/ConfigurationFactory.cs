@@ -31,7 +31,7 @@ namespace Modbus2Mqtt.Infrastructure
             
             var config = deserializer.Deserialize<Configuration.Configuration>(yml);
             
-            foreach (var slave in config.Slaves)
+            foreach (var slave in config.Slave)
             {
                 slave.Device = DeviceFactory.GetDevice(slave.Type);
             }

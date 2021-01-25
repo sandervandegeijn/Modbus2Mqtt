@@ -21,7 +21,7 @@ namespace Modbus2Mqtt.Modbus
         public void Start()
         {
             var tasks = new List<Task>();
-            foreach (var slave in _configuration.Slaves)
+            foreach (var slave in _configuration.Slave)
             {
                 tasks.Add(Task.Factory.StartNew(() => { StartCommunication(slave); }));
             }

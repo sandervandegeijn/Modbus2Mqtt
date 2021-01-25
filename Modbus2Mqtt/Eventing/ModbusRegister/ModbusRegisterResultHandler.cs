@@ -35,7 +35,6 @@ namespace Modbus2Mqtt.Eventing.ModbusRegister
                 Logger.Info("Result for: " + registerResult.Slave.Name + " register: " + registerResult.Slave.Name +" : " + parsedResult);
                 await _mediator.Publish(new OutGoingMessage {Register = registerResult.Register, Slave = registerResult.Slave, Message = parsedResult.ToString(CultureInfo.InvariantCulture)}, cancellationToken);
             }
-            
         }
     }
 }

@@ -16,7 +16,8 @@ namespace Modbus2Mqtt.Eventing.Mqtt
 
         public Task Handle(OutGoingMessage message, CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
+            return Task.CompletedTask;
         }
     }
 }

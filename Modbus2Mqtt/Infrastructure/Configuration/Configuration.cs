@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using YamlDotNet.Serialization;
 
 namespace Modbus2Mqtt.Infrastructure.Configuration
 {
@@ -14,13 +15,14 @@ namespace Modbus2Mqtt.Infrastructure.Configuration
         
         public decimal Stopbits { get; set; }
         
-        public List<Slaves> Slaves { get; set; }
+        [YamlMember(Alias = "slaves", ApplyNamingConventions = false)]
+        public List<Slaves> Slave { get; set; }
         
         public Mqtt Mqtt { get; set; }
 
         public Configuration()
         {
-            Slaves = new List<Slaves>();
+            Slave = new List<Slaves>();
         }
     }
 }
