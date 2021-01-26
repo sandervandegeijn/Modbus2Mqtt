@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using MediatR;
+using Modbus2Mqtt.Eventing.ModbusRequest;
 using Modbus2Mqtt.Infrastructure.Configuration;
 using NLog;
 
@@ -8,14 +10,16 @@ namespace Modbus2Mqtt.Modbus
     public class TrafficInitiator
     {
         private readonly Configuration _configuration;
-        private readonly ModbusCommunicator _modbusCommunicator;
+        private readonly IMediator _mediator;
+        private readonly ModbusRequestHandler _modbusRequestHandler;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
 
-        public TrafficInitiator(Configuration configuration, ModbusCommunicator modbusCommunicator)
+        public TrafficInitiator(Configuration configuration, IMediator mediator, ModbusRequestHandler modbusRequestHandler)
         {
             _configuration = configuration;
-            _modbusCommunicator = modbusCommunicator;
+            _mediator = mediator;
+            _modbusRequestHandler = modbusRequestHandler;
         }
 
         public void Start()
@@ -29,11 +33,13 @@ namespace Modbus2Mqtt.Modbus
 
         private async void StartCommunication(Slave slave)
         {
-            Logger.Info("Starting task for " + slave.Name);
+            Logger.Info("Starting requests for " + slave.Name);
             while (true)
             {
-                _modbusCommunicator.RequestForSlave(slave);
-                Logger.Info("Polling for " + slave.Name);
+                foreach (var register in slave.DeviceDefition.Registers)
+                {
+                    await _modbusRequestHandler.Handle(new ModbusRequest {Slave = slave, Register = register});
+                }
                 await Task.Delay(slave.PollingInterval);
             }
         }

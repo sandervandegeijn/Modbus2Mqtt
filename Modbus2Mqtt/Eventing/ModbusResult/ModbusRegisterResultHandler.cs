@@ -6,7 +6,7 @@ using MediatR;
 using Modbus2Mqtt.Eventing.Mqtt;
 using NLog;
 
-namespace Modbus2Mqtt.Eventing.ModbusRegister
+namespace Modbus2Mqtt.Eventing.ModbusResult
 {
     public class ModbusRegisterResultHandler : INotificationHandler<ModbusRegisterResult>
     {
@@ -32,7 +32,7 @@ namespace Modbus2Mqtt.Eventing.ModbusRegister
                 {
                     parsedResult = ModbusClient.ConvertRegistersToFloat(registerResult.Result, ModbusClient.RegisterOrder.LowHigh);
                 }
-                Logger.Info("Result for: " + registerResult.Slave.Name + " register: " + registerResult.Slave.Name +" : " + parsedResult);
+                Logger.Info("Result for: " + registerResult.Slave.Name + " register: " + registerResult.Register.Name +" : " + parsedResult);
                 await _mediator.Publish(new OutGoingMessage {Register = registerResult.Register, Slave = registerResult.Slave, Message = parsedResult.ToString(CultureInfo.InvariantCulture)}, cancellationToken);
             }
         }

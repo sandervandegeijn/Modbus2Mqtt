@@ -1,17 +1,14 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Modbus2Mqtt.Modbus;
 
 namespace Modbus2Mqtt.Eventing.Mqtt
 {
     public class IncomingMessageHandler: INotificationHandler<OutGoingMessage>
     {
-        private readonly ModbusCommunicator _modbusCommunicator;
 
-        public IncomingMessageHandler(ModbusCommunicator modbusCommunicator)
+        public IncomingMessageHandler()
         {
-            _modbusCommunicator = modbusCommunicator;
         }
 
         public Task Handle(OutGoingMessage message, CancellationToken cancellationToken)

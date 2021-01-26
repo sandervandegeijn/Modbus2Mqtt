@@ -10,6 +10,12 @@
         
         public int PollingInterval { get; set; }
         
+        public int Priority { get; set; }
+        
+        public string Exclude { get; set; }
+        
+        public string Include { get; set; }
+        
         public DeviceDefinition.DeviceDefition DeviceDefition { get; set; }
     }
 }

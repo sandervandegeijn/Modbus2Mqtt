@@ -15,9 +15,9 @@ namespace Modbus2Mqtt.Eventing.Mqtt
             _mqttClient = mqttClient;
         }
 
-        private string StripNonAlphaNumeric(string input)
+        private static string StripNonAlphaNumeric(string input)
         {
-            return Regex.Replace(input, @"[^a-zA-Z0-9]+", " ");
+            return Regex.Replace(input, @"[^a-zA-Z0-9]+", "-");
         }
 
         public async Task Handle(OutGoingMessage message, CancellationToken cancellationToken)
