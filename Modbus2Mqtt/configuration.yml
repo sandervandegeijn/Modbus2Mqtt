@@ -3,7 +3,7 @@ baudrate: 9600
 databits: 8
 parity: none # none even mark odd space
 stopbits: 1 #0 1 1.5 2
-slaves:
+slave:
   - name: eastron_test
     type: EastronSDM120
     slave_id: 1

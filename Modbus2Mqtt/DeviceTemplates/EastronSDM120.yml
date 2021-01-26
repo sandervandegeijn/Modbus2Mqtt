@@ -16,6 +16,108 @@ registers:
   - name: active power
     unit: W
     data_type: float
-    start: 6
+    start: 12
+    registers: 2
+    function: read_input_registers
+  - name: apparent power
+    unit: VA
+    data_type: float
+    start: 18
+    registers: 2
+    function: read_input_registers
+  - name: reactive power
+    unit: VAr
+    data_type: float
+    start: 14
+    registers: 2
+    function: read_input_registers
+  - name: frequency
+    unit: Hz
+    data_type: float
+    start: 70
+    registers: 2
+    function: read_input_registers
+  - name: import active energy
+    unit: kWh
+    data_type: float
+    start: 72
+    registers: 2
+    function: read_input_registers
+  - name: export active energy
+    unit: kWh
+    data_type: float
+    start: 74
+    registers: 2
+    function: read_input_registers
+  - name: import reactive energy
+    unit: kvarh
+    data_type: float
+    start: 76
+    registers: 2
+    function: read_input_registers
+  - name: export reactive energy
+    unit: kvarh
+    data_type: float
+    start: 78
+    registers: 2
+    function: read_input_registers
+  - name: total system power demand
+    unit: W
+    data_type: float
+    start: 84
+    registers: 2
+    function: read_input_registers
+  - name: maximum total system power demand
+    unit: W
+    data_type: float
+    start: 86
+    registers: 2
+    function: read_input_registers
+  - name: import system power demand
+    unit: W
+    data_type: float
+    start: 88
+    registers: 2
+    function: read_input_registers
+  - name: maximum import system power demand
+    unit: W
+    data_type: float
+    start: 90
+    registers: 2
+    function: read_input_registers
+  - name: export system power demand
+    unit: W
+    data_type: float
+    start: 92
+    registers: 2
+    function: read_input_registers
+  - name: maximum export system power demand
+    unit: W
+    data_type: float
+    start: 94
+    registers: 2
+    function: read_input_registers
+  - name: current demand
+    unit: A
+    data_type: float
+    start: 258
+    registers: 2
+    function: read_input_registers
+  - name: maximum current demand
+    unit: A
+    data_type: float
+    start: 264
+    registers: 2
+    function: read_input_registers
+  - name: total active energy
+    unit: kWh
+    data_type: float
+    start: 342
+    registers: 2
+    function: read_input_registers
+  - name: total reactive energy
+    unit: Kvarh
+    data_type: float
+    start: 344
     registers: 2
     function: read_input_registers

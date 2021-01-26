@@ -1,11 +1,12 @@
-﻿using System.Threading;
+﻿using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using MQTTnet.Client;
 
 namespace Modbus2Mqtt.Eventing.Mqtt
 {
-    public class OutGoingMessageHandler: INotificationHandler<OutGoingMessage>
+    public class OutGoingMessageHandler : INotificationHandler<OutGoingMessage>
     {
         private readonly IMqttClient _mqttClient;
 
@@ -13,10 +14,15 @@ namespace Modbus2Mqtt.Eventing.Mqtt
         {
             _mqttClient = mqttClient;
         }
-        
+
+        private string StripNonAlphaNumeric(string input)
+        {
+            return Regex.Replace(input, @"[^a-zA-Z0-9]+", " ");
+        }
+
         public async Task Handle(OutGoingMessage message, CancellationToken cancellationToken)
         {
-            await _mqttClient.PublishAsync("modbus2mqtt/get/" + message.Slave.Name + "/" + message.Register.Name, message.Message);
+            await _mqttClient.PublishAsync("modbus2mqtt/get/" + StripNonAlphaNumeric(message.Slave.Name) + "/" + StripNonAlphaNumeric(message.Register.Name), message.Message);
         }
     }
 }

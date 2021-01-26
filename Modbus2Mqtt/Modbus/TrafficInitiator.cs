@@ -27,7 +27,7 @@ namespace Modbus2Mqtt.Modbus
             }
         }
 
-        private async void StartCommunication(Slaves slave)
+        private async void StartCommunication(Slave slave)
         {
             Logger.Info("Starting task for " + slave.Name);
             while (true)

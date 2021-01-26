@@ -15,14 +15,13 @@ namespace Modbus2Mqtt.Infrastructure.Configuration
         
         public decimal Stopbits { get; set; }
         
-        [YamlMember(Alias = "slaves", ApplyNamingConventions = false)]
-        public List<Slaves> Slave { get; set; }
+        public List<Slave> Slave { get; set; }
         
         public Mqtt Mqtt { get; set; }
 
         public Configuration()
         {
-            Slave = new List<Slaves>();
+            Slave = new List<Slave>();
         }
     }
 }

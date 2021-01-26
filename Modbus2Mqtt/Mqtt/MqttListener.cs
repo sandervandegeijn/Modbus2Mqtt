@@ -26,7 +26,7 @@ namespace Modbus2Mqtt.Mqtt
         {
             foreach (var slave in _configuration.Slave)
             {
-                var registers = (from r in slave.Device.Registers
+                var registers = (from r in slave.DeviceDefition.Registers
                     where r.Function.StartsWith("write_")
                     select r).ToList();
 

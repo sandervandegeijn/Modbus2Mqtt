@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Modbus2Mqtt.Infrastructure.Configuration;
-using Modbus2Mqtt.Infrastructure.Device;
+using Modbus2Mqtt.Infrastructure.DeviceDefinition;
 
 namespace Modbus2Mqtt.Eventing.ModbusRegister
 {
@@ -8,7 +8,7 @@ namespace Modbus2Mqtt.Eventing.ModbusRegister
     {
         public Register Register { get; set; }
         
-        public Slaves Slave { get; set; }
+        public Slave Slave { get; set; }
         
         public int[] Result { get; set; }
     }

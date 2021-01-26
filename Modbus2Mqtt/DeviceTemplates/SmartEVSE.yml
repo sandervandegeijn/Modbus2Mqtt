@@ -1,8 +1,8 @@
 ﻿friendly_name: SmartEVSE controller
 endianness: big-endian #little-endian big-endian
 registers:
-  - name: current
-    unit: A
+  - name: current 
+    unit: A #post values *10, if you need 6A post 60, if you need 16A post 160.
     data_type: float
     start: 0x00A6
     registers: 1

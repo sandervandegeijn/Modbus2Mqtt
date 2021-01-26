@@ -24,11 +24,11 @@ namespace Modbus2Mqtt.Eventing.ModbusRegister
             if (registerResult.Register.DataType.Equals("float"))
             {
                 float parsedResult = 0;
-                if (registerResult.Slave.Device.Endianness.ToLower().Equals("big-endian"))
+                if (registerResult.Slave.DeviceDefition.Endianness.ToLower().Equals("big-endian"))
                 {
                     parsedResult = ModbusClient.ConvertRegistersToFloat(registerResult.Result, ModbusClient.RegisterOrder.HighLow);
                 }
-                if (registerResult.Slave.Device.Endianness.ToLower().Equals("little-endian"))
+                if (registerResult.Slave.DeviceDefition.Endianness.ToLower().Equals("little-endian"))
                 {
                     parsedResult = ModbusClient.ConvertRegistersToFloat(registerResult.Result, ModbusClient.RegisterOrder.LowHigh);
                 }

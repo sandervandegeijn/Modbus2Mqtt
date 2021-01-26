@@ -5,7 +5,7 @@ using EasyModbus;
 using MediatR;
 using Modbus2Mqtt.Eventing.ModbusRegister;
 using Modbus2Mqtt.Infrastructure.Configuration;
-using Modbus2Mqtt.Infrastructure.Device;
+using Modbus2Mqtt.Infrastructure.DeviceDefinition;
 using NLog;
 
 namespace Modbus2Mqtt.Modbus
@@ -15,7 +15,7 @@ namespace Modbus2Mqtt.Modbus
         private readonly ModbusClient _modbusClient;
         private readonly IMediator _mediator;
 
-        private readonly ConcurrentQueue<Slaves> _queue;
+        private readonly ConcurrentQueue<Slave> _queue;
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -23,11 +23,11 @@ namespace Modbus2Mqtt.Modbus
         {
             _modbusClient = modbusClient;
             _mediator = mediator;
-            _queue = new ConcurrentQueue<Slaves>();
+            _queue = new ConcurrentQueue<Slave>();
             Task.Factory.StartNew(Start);
         }
 
-        public void RequestForSlave(Slaves slave)
+        public void RequestForSlave(Slave slave)
         {
             //Todo DTO with time
             _queue.Enqueue(slave);
@@ -48,7 +48,7 @@ namespace Modbus2Mqtt.Modbus
                 {
                     _modbusClient.UnitIdentifier = Convert.ToByte(slave.SlaveId);
 
-                    foreach (var register in slave.Device.Registers)
+                    foreach (var register in slave.DeviceDefition.Registers)
                     {
                         if (register.Function.ToLower().Equals("read_input_registers"))
                         {

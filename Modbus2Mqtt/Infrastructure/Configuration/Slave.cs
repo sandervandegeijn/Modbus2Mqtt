@@ -1,6 +1,6 @@
 ﻿namespace Modbus2Mqtt.Infrastructure.Configuration
 {
-    public class Slaves
+    public class Slave
     {
         public string Name { get; set; }
         
@@ -10,6 +10,6 @@
         
         public int PollingInterval { get; set; }
         
-        public Device.Device Device { get; set; }
+        public DeviceDefinition.DeviceDefition DeviceDefition { get; set; }
     }
 }

@@ -33,7 +33,7 @@ namespace Modbus2Mqtt.Infrastructure
             
             foreach (var slave in config.Slave)
             {
-                slave.Device = DeviceFactory.GetDevice(slave.Type);
+                slave.DeviceDefition = DeviceFactory.GetDevice(slave.Type);
             }
 
             Configuration = config;

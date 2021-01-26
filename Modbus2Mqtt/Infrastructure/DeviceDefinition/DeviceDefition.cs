@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Modbus2Mqtt.Infrastructure.Device
+namespace Modbus2Mqtt.Infrastructure.DeviceDefinition
 {
-    public class Device
+    public class DeviceDefition
     {
         public string FriendlyName { get; set; }
         
@@ -10,7 +10,7 @@ namespace Modbus2Mqtt.Infrastructure.Device
         
         public List<Register> Registers { get; set; }
 
-        public Device()
+        public DeviceDefition()
         {
             Registers = new List<Register>();
         }
