@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using MediatR;
 using Modbus2Mqtt.Eventing.ModbusRequest;
 using Modbus2Mqtt.Infrastructure.Configuration;
+using Modbus2Mqtt.Infrastructure.DeviceDefinition;
 using NLog;
 
 namespace Modbus2Mqtt.Modbus
@@ -33,13 +35,44 @@ namespace Modbus2Mqtt.Modbus
 
         private async void StartCommunication(Slave slave)
         {
+            var registers = new List<Register>();
+            if (!string.IsNullOrEmpty(slave.Include))
+            {
+                var includedRegisters = slave.Include.Split(";");
+                registers = (from r in slave.DeviceDefition.Registers
+                    where includedRegisters.Contains(r.Name)
+                    select r).ToList();
+            }
+                
+            if (!string.IsNullOrEmpty(slave.Exclude))
+            {
+                var includedRegisters = slave.Exclude.Split(";");
+                registers = (from r in slave.DeviceDefition.Registers
+                    where !includedRegisters.Contains(r.Name)
+                    select r).ToList();
+            }
+            
             Logger.Info("Starting requests for " + slave.Name);
             while (true)
             {
-                foreach (var register in slave.DeviceDefition.Registers)
+                if (string.IsNullOrEmpty(slave.Exclude) && string.IsNullOrEmpty(slave.Include))
                 {
-                    await _modbusRequestHandler.Handle(new ModbusRequest {Slave = slave, Register = register});
+                    registers = slave.DeviceDefition.Registers;
                 }
+
+                if (registers == null || registers.Count == 0)
+                {
+                    Logger.Error("No registers for device " + slave.Name);
+                }
+                else
+                {
+
+                    foreach (var register in registers)
+                    {
+                        await _modbusRequestHandler.Handle(new ModbusRequest {Slave = slave, Register = register});
+                    }
+                }
+
                 await Task.Delay(slave.PollingInterval);
             }
         }
