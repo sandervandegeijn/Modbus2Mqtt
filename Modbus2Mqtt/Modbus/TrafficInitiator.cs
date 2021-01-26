@@ -43,7 +43,7 @@ namespace Modbus2Mqtt.Modbus
                     where includedRegisters.Contains(r.Name)
                     select r).ToList();
             }
-                
+
             if (!string.IsNullOrEmpty(slave.Exclude))
             {
                 var includedRegisters = slave.Exclude.Split(";");
@@ -51,22 +51,21 @@ namespace Modbus2Mqtt.Modbus
                     where !includedRegisters.Contains(r.Name)
                     select r).ToList();
             }
-            
+
+            if (string.IsNullOrEmpty(slave.Exclude) && string.IsNullOrEmpty(slave.Include))
+            {
+                registers = slave.DeviceDefition.Registers;
+            }
+
             Logger.Info("Starting requests for " + slave.Name);
             while (true)
             {
-                if (string.IsNullOrEmpty(slave.Exclude) && string.IsNullOrEmpty(slave.Include))
-                {
-                    registers = slave.DeviceDefition.Registers;
-                }
-
                 if (registers == null || registers.Count == 0)
                 {
                     Logger.Error("No registers for device " + slave.Name);
                 }
                 else
                 {
-
                     foreach (var register in registers)
                     {
                         await _modbusRequestHandler.Handle(new ModbusRequest {Slave = slave, Register = register});
