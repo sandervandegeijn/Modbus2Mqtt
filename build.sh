@@ -10,6 +10,7 @@ then
 	#docker rm modbus2mqtt-9600
 	#docker rmi modbus2mqtt
 	git pull
+	cd Modbus2Mqtt
 	docker build  --file Dockerfile -t modbus2mqtt .
 	#docker run -d --name neofotoweb --network custombridge --restart always neofotoweb
 fi
