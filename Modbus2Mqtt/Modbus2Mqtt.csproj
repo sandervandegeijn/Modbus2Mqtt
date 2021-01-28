@@ -10,26 +10,20 @@
       <PackageReference Include="EasyModbusTCP" Version="5.6.0" />
       <PackageReference Include="Lamar" Version="5.0.0" />
       <PackageReference Include="MediatR" Version="9.0.0" />
-      <PackageReference Include="MQTTnet" Version="3.0.14-rc6" />
-      <PackageReference Include="NLog" Version="4.7.6" />
+      <PackageReference Include="MQTTnet" Version="3.0.14-rc7" />
+      <PackageReference Include="NLog" Version="4.7.7" />
       <PackageReference Include="System.IO.Ports" Version="5.0.0" />
       <PackageReference Include="YamlDotNet" Version="9.1.5-issue-templates-0002" />
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="DeviceTemplates\EastronSDM120.yml">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
       <None Update="configuration.yml">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="Nlog.config">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
-      <None Update="DeviceTemplates\SmartEVSE.yml">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="DeviceTemplates\Examle.txt">
+      <None Update="DeviceTemplates\*">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>
