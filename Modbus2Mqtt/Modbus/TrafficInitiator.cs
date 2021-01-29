@@ -66,12 +66,14 @@ namespace Modbus2Mqtt.Modbus
                 }
                 else
                 {
+                    var wait = 1000;
                     foreach (var register in registers)
                     {
+                        await Task.Delay(wait);
+                        wait += 1000;
                         await _modbusRequestHandler.Handle(new ModbusRequest {Slave = slave, Register = register});
                     }
                 }
-
                 await Task.Delay(slave.PollingInterval);
             }
         }

@@ -10,7 +10,7 @@ slave:
     polling_interval: 10000 #ms
     priority: 1 #highest will always be executed first
     include: ""
-    exclude: "voltage"
+    exclude: "voltage" #voltage;
 mqtt:
   server: 192.168.2.35
   port: 1883
