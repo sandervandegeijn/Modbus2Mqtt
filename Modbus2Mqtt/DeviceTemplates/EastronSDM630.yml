@@ -1,4 +1,4 @@
-﻿friendly_name: Eastron SDM120 enery meter
+﻿friendly_name: Eastron SDM630 enery meter
 endianness: big-endian #little-endian big-endian
 registers:
   - name: phase 1 line to neutral volts
