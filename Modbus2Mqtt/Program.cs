@@ -45,7 +45,7 @@ namespace Modbus2Mqtt
             mqttListener.Start();
             while (true)
             {
-                await Task.Delay(10);
+                await Task.Delay(100);
             }
         }
     }
