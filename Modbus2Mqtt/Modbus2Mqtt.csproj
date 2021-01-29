@@ -26,6 +26,9 @@
       <None Update="DeviceTemplates\*">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="DeviceTemplates\EastronSDM630.yml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

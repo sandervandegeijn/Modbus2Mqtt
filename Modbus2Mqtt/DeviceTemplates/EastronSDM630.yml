@@ -1,0 +1,232 @@
+﻿friendly_name: Eastron SDM120 enery meter
+endianness: big-endian #little-endian big-endian
+registers:
+  - name: phase 1 line to neutral volts
+    unit: V
+    data_type: float
+    start: 0
+    registers: 2
+    function: read_input_registers #read_input_registers read_coil read_discrete_input read_holding_registers write_single_coil write_single_holding_register write_multiple_coils write_multiple_holding_registers
+  - name: phase 2 line to neutral volts
+    unit: V
+    data_type: float
+    start: 2
+    registers: 2
+    function: read_input_registers #read_input_registers read_coil read_discrete_input read_holding_registers write_single_coil write_single_holding_register write_multiple_coils write_multiple_holding_registers
+  - name: phase 3 line to neutral volts
+    unit: V
+    data_type: float
+    start: 4
+    registers: 2
+    function: read_input_registers #read_input_registers read_coil read_discrete_input read_holding_registers write_single_coil write_single_holding_register write_multiple_coils write_multiple_holding_registers
+  - name: phase 1 current
+    unit: A
+    data_type: float
+    start: 6
+    registers: 2
+    function: read_input_registers
+  - name: phase 2 current
+    unit: A
+    data_type: float
+    start: 8
+    registers: 2
+    function: read_input_registers
+  - name: phase 3 current
+    unit: A
+    data_type: float
+    start: 10
+    registers: 2
+    function: read_input_registers
+  - name: phase 1 power
+    unit: W
+    data_type: float
+    start: 12
+    registers: 2
+    function: read_input_registers
+  - name: phase 2 power
+    unit: W
+    data_type: float
+    start: 14
+    registers: 2
+    function: read_input_registers
+  - name: phase 3 power
+    unit: W
+    data_type: float
+    start: 16
+    registers: 2
+    function: read_input_registers
+  - name: phase 1 volt amps
+    unit: VA
+    data_type: float
+    start: 18
+    registers: 2
+    function: read_input_registers
+  - name: phase 2 volt amps
+    unit: VA
+    data_type: float
+    start: 20
+    registers: 2
+    function: read_input_registers
+  - name: phase 3 volt amps
+    unit: VA
+    data_type: float
+    start: 22
+    registers: 2
+    function: read_input_registers  
+  - name: phase 1 volt amps reactive
+    unit: VAr
+    data_type: float
+    start: 24
+    registers: 2
+    function: read_input_registers
+  - name: phase 2 volt amps reactive
+    unit: VAr
+    data_type: float
+    start: 26
+    registers: 2
+    function: read_input_registers
+  - name: phase 3 volt amps reactive
+    unit: VAr
+    data_type: float
+    start: 28
+    registers: 2
+    function: read_input_registers 
+  - name: phase 1 power factor
+    unit: ""
+    data_type: float
+    start: 30
+    registers: 2
+    function: read_input_registers
+  - name: phase 2 power factor
+    unit: ""
+    data_type: float
+    start: 32
+    registers: 2
+    function: read_input_registers
+  - name: phase 3 power factor
+    unit: ""
+    data_type: float
+    start: 34
+    registers: 2
+    function: read_input_registers
+  - name: phase 1 phase angle
+    unit: degrees
+    data_type: float
+    start: 36
+    registers: 2
+    function: read_input_registers
+  - name: phase 2 phase angle
+    unit: degrees
+    data_type: float
+    start: 38
+    registers: 2
+    function: read_input_registers
+  - name: phase 3 phase angle
+    unit: degrees
+    data_type: float
+    start: 40
+    registers: 2
+    function: read_input_registers
+  - name: average line to neutral volts
+    unit: V
+    data_type: float
+    start: 42
+    registers: 2
+    function: read_input_registers
+  - name: average line current
+    unit: A
+    data_type: float
+    start: 46
+    registers: 2
+    function: read_input_registers
+  - name: sum of line currents
+    unit: A
+    data_type: float
+    start: 48
+    registers: 2
+    function: read_input_registers
+  - name: total system power
+    unit: W
+    data_type: float
+    start: 52
+    registers: 2
+    function: read_input_registers
+  - name: total system volt amps
+    unit: VA
+    data_type: float
+    start: 56
+    registers: 2
+    function: read_input_registers
+  - name: total system VAr
+    unit: VAr
+    data_type: float
+    start: 60
+    registers: 2
+    function: read_input_registers
+  - name: total system power factor
+    unit: ""
+    data_type: float
+    start: 62
+    registers: 2
+    function: read_input_registers
+  - name: total system phase angle
+    unit: degrees
+    data_type: float
+    start: 66
+    registers: 2
+    function: read_input_registers
+  - name: frequency
+    unit: Hz
+    data_type: float
+    start: 70
+    registers: 2
+    function: read_input_registers     
+  - name: total import active energy
+    unit: kWh
+    data_type: float
+    start: 72
+    registers: 2
+    function: read_input_registers
+  - name: total export active energy
+    unit: kWh
+    data_type: float
+    start: 74
+    registers: 2
+    function: read_input_registers
+  - name: total import reactive energy
+    unit: kVArh
+    data_type: float
+    start: 76
+    registers: 2
+    function: read_input_registers
+  - name: total export reactive energy
+    unit: kVArh
+    data_type: float
+    start: 78
+    registers: 2
+    function: read_input_registers
+  - name: total VAh
+    unit: kVAh
+    data_type: float
+    start: 80
+    registers: 2
+    function: read_input_registers
+  - name: total Ah
+    unit: kVAh
+    data_type: float
+    start: 82
+    registers: 2
+    function: read_input_registers
+  - name: total system power demand
+    unit: W
+    data_type: float
+    start: 84
+    registers: 2
+    function: read_input_registers
+  - name: maximum total system power demand
+    unit: W
+    data_type: float
+    start: 86
+    registers: 2
+    function: read_input_registers
+  #### I quit here, more to be found: https://bg-etech.de/download/manual/SDM630Register1-5.pdf
