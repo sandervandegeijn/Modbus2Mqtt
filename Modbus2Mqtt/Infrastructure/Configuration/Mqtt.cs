@@ -11,5 +11,7 @@
         public string Password { get; set; }
         
         public bool Tls { get; set; }
+        
+        public string ClientId { get; set; }
     }
 }

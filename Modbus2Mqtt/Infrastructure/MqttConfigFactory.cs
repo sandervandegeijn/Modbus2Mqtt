@@ -15,7 +15,7 @@ namespace Modbus2Mqtt.Infrastructure
             _mqttFactory = new MqttFactory();
             
             var options = new MqttClientOptionsBuilder()
-                .WithClientId("Modbus2Mqtt")
+                .WithClientId(configuration.Mqtt.ClientId)
                 .WithTcpServer(configuration.Mqtt.Server)
                 .WithCleanSession();
             

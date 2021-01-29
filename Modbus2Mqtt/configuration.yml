@@ -17,3 +17,4 @@ mqtt:
   username: "" 
   password: ""
   tls: false
+  client_id: "development"
