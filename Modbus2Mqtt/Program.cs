@@ -42,7 +42,7 @@ namespace Modbus2Mqtt
             trafficInitiator.Start();
             var mqttListener = container.GetInstance<MqttListener>();
             mqttListener.Start();
-            Console.ReadKey();
+            Console.Read();
         }
     }
 }
