@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using EasyModbus;
 using Lamar;
 using MediatR;
@@ -16,7 +17,7 @@ namespace Modbus2Mqtt
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             Logger.Info("Starting application");
             
@@ -42,7 +43,10 @@ namespace Modbus2Mqtt
             trafficInitiator.Start();
             var mqttListener = container.GetInstance<MqttListener>();
             mqttListener.Start();
-            Console.Read();
+            while (true)
+            {
+                await Task.Delay(10);
+            }
         }
     }
 }
