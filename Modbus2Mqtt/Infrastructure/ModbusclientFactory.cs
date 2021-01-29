@@ -1,4 +1,5 @@
-﻿using System.IO.Ports;
+﻿using System;
+using System.IO.Ports;
 using EasyModbus;
 
 namespace Modbus2Mqtt.Infrastructure
@@ -31,6 +32,7 @@ namespace Modbus2Mqtt.Infrastructure
                 "mark" => Parity.Mark,
                 "odd" => Parity.Odd,
                 "space" => Parity.Space,
+                _ => throw new ArgumentOutOfRangeException()
             };
 
             modbusClient.StopBits = config.Stopbits switch
@@ -38,7 +40,8 @@ namespace Modbus2Mqtt.Infrastructure
                 1 => StopBits.One,
                 2 => StopBits.Two,
                 0 => StopBits.None,
-                1.5m => StopBits.OnePointFive
+                1.5m => StopBits.OnePointFive,
+                _ => throw new ArgumentOutOfRangeException()
             };
             
             if (config.Stopbits == 0)

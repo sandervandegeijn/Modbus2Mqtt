@@ -41,10 +41,10 @@ namespace Modbus2Mqtt
             });
 
             var modbusRequestHandler = container.GetInstance<ModbusRequestHandler>();
-            modbusRequestHandler.Start();
+            await modbusRequestHandler.Start();
             
             var trafficInitiator = container.GetInstance<TrafficInitiator>();
-            trafficInitiator.Start();
+            await trafficInitiator.Start();
             var mqttListener = container.GetInstance<MqttListener>();
             mqttListener.Start();
             while (true)

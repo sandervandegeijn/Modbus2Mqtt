@@ -23,11 +23,9 @@ namespace Modbus2Mqtt.Eventing.ModbusRequest
             _queue = new ConcurrentQueue<ModbusRequest>();
         }
 
-        public Task Handle(ModbusRequest modbusRequest)
+        public static void Handle(ModbusRequest modbusRequest)
         {
             _queue.Enqueue(modbusRequest);
-            return Task.CompletedTask;
-            ;
         }
 
         public async Task Start()

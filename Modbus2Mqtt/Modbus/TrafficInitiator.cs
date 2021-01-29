@@ -13,18 +13,16 @@ namespace Modbus2Mqtt.Modbus
     {
         private readonly Configuration _configuration;
         private readonly IMediator _mediator;
-        private readonly ModbusRequestHandler _modbusRequestHandler;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
 
-        public TrafficInitiator(Configuration configuration, IMediator mediator, ModbusRequestHandler modbusRequestHandler)
+        public TrafficInitiator(Configuration configuration, IMediator mediator)
         {
             _configuration = configuration;
             _mediator = mediator;
-            _modbusRequestHandler = modbusRequestHandler;
         }
 
-        public async void Start()
+        public async Task Start()
         {
             var tasks = new List<Task>();
             var wait = 1000;
@@ -32,11 +30,12 @@ namespace Modbus2Mqtt.Modbus
             {
                 await Task.Delay(wait);
                 wait += 1000;
-                tasks.Add(Task.Factory.StartNew(() => { StartCommunication(slave); }));
+                tasks.Add(Task.Run(() =>  { StartCommunication(slave).Wait(); }));
+                await Task.WhenAny(tasks);
             }
         }
 
-        private async Task StartCommunication(Slave slave)
+        private static async Task StartCommunication(Slave slave)
         {
             var registers = new List<Register>();
             
@@ -73,7 +72,7 @@ namespace Modbus2Mqtt.Modbus
             {
                 foreach (var register in registers)
                 {
-                    await _modbusRequestHandler.Handle(new ModbusRequest {Slave = slave, Register = register});
+                    ModbusRequestHandler.Handle(new ModbusRequest {Slave = slave, Register = register});
                 }
                 await Task.Delay(slave.PollingInterval);
             }
