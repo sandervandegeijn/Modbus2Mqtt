@@ -4,6 +4,7 @@ using EasyModbus;
 using Lamar;
 using MediatR;
 using MediatR.Pipeline;
+using Modbus2Mqtt.Eventing.ModbusRequest;
 using Modbus2Mqtt.Infrastructure;
 using Modbus2Mqtt.Infrastructure.Configuration;
 using Modbus2Mqtt.Modbus;
@@ -39,6 +40,9 @@ namespace Modbus2Mqtt
                 x.For<IMqttClient>().Use(s => s.GetInstance<MqttConfigFactory>().GetMqttClient().Result).Singleton();
             });
 
+            var modbusRequestHandler = container.GetInstance<ModbusRequestHandler>();
+            modbusRequestHandler.Start();
+            
             var trafficInitiator = container.GetInstance<TrafficInitiator>();
             trafficInitiator.Start();
             var mqttListener = container.GetInstance<MqttListener>();

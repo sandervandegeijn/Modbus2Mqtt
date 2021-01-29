@@ -36,9 +36,10 @@ namespace Modbus2Mqtt.Modbus
             }
         }
 
-        private async void StartCommunication(Slave slave)
+        private async Task StartCommunication(Slave slave)
         {
             var registers = new List<Register>();
+            
             if (!string.IsNullOrEmpty(slave.Include))
             {
                 var includedRegisters = slave.Include.Split(";");
@@ -61,6 +62,7 @@ namespace Modbus2Mqtt.Modbus
             }
 
             Logger.Info("Starting requests for " + slave.Name);
+            
             if (registers == null || registers.Count == 0)
             {
                 Logger.Error("No registers for device " + slave.Name);

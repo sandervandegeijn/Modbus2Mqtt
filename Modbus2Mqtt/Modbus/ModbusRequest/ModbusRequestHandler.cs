@@ -21,7 +21,6 @@ namespace Modbus2Mqtt.Eventing.ModbusRequest
             _modbusClient = modbusClient;
             _mediator = mediator;
             _queue = new ConcurrentQueue<ModbusRequest>();
-            Start();
         }
 
         public Task Handle(ModbusRequest modbusRequest)
@@ -31,11 +30,12 @@ namespace Modbus2Mqtt.Eventing.ModbusRequest
             ;
         }
 
-        private async void Start()
+        public async Task Start()
         {
             Logger.Info("Starting Modbus communication");
             while (true)
             {
+                Logger.Info("Items in queue:" +_queue.Count);
                 _queue.TryDequeue(out var modbusRequest);
                 if (modbusRequest != null)
                 {
@@ -72,8 +72,8 @@ namespace Modbus2Mqtt.Eventing.ModbusRequest
 
                 if (_queue.IsEmpty)
                 {
-                    Logger.Debug("Queue empty waiting 5ms");
-                    await Task.Delay(5);
+                    Logger.Info("Queue empty waiting 250ms");
+                    await Task.Delay(250);
                 }
             }
         }
