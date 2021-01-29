@@ -24,11 +24,14 @@ namespace Modbus2Mqtt.Modbus
             _modbusRequestHandler = modbusRequestHandler;
         }
 
-        public void Start()
+        public async void Start()
         {
             var tasks = new List<Task>();
+            var wait = 1000;
             foreach (var slave in _configuration.Slave)
             {
+                await Task.Delay(wait);
+                wait += 1000;
                 tasks.Add(Task.Factory.StartNew(() => { StartCommunication(slave); }));
             }
         }
@@ -58,21 +61,17 @@ namespace Modbus2Mqtt.Modbus
             }
 
             Logger.Info("Starting requests for " + slave.Name);
+            if (registers == null || registers.Count == 0)
+            {
+                Logger.Error("No registers for device " + slave.Name);
+                return;
+            }
+
             while (true)
             {
-                if (registers == null || registers.Count == 0)
+                foreach (var register in registers)
                 {
-                    Logger.Error("No registers for device " + slave.Name);
-                }
-                else
-                {
-                    var wait = 1000;
-                    foreach (var register in registers)
-                    {
-                        await Task.Delay(wait);
-                        wait += 1000;
-                        await _modbusRequestHandler.Handle(new ModbusRequest {Slave = slave, Register = register});
-                    }
+                    await _modbusRequestHandler.Handle(new ModbusRequest {Slave = slave, Register = register});
                 }
                 await Task.Delay(slave.PollingInterval);
             }
