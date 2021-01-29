@@ -33,7 +33,7 @@ namespace Modbus2Mqtt.Modbus
             {
                 await Task.Delay(wait);
                 wait += 1000;
-                tasks.Add(Task.Run(() =>  { StartCommunication(slave); }));
+                tasks.Add(Task.Run(async () =>  { await StartCommunication(slave); }));
             }
         }
 
