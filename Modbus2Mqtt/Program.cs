@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using EasyModbus;
 using Lamar;
 using MediatR;
@@ -8,6 +7,7 @@ using Modbus2Mqtt.Eventing.ModbusRequest;
 using Modbus2Mqtt.Infrastructure;
 using Modbus2Mqtt.Infrastructure.Configuration;
 using Modbus2Mqtt.Modbus;
+using Modbus2Mqtt.Modbus.ModbusRequest;
 using Modbus2Mqtt.Mqtt;
 using MQTTnet.Client;
 using NLog;
@@ -41,13 +41,13 @@ namespace Modbus2Mqtt
             });
 
             var modbusRequestHandler = container.GetInstance<ModbusRequestHandler>();
-            await modbusRequestHandler.Start();
+            modbusRequestHandler.Start();
             
             var trafficInitiator = container.GetInstance<TrafficInitiator>();
-            await trafficInitiator.Start();
+            trafficInitiator.Start();
             
             var mqttListener = container.GetInstance<MqttListener>();
-            await mqttListener.Start();
+            mqttListener.Start();
             
             while (true)
             {

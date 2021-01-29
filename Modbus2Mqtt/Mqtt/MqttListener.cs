@@ -23,7 +23,7 @@ namespace Modbus2Mqtt.Mqtt
             _mediator = mediator;
         }
 
-        public async Task Start()
+        public async void Start()
         {
             foreach (var slave in _configuration.Slave)
             {

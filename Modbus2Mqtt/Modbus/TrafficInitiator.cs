@@ -5,6 +5,7 @@ using MediatR;
 using Modbus2Mqtt.Eventing.ModbusRequest;
 using Modbus2Mqtt.Infrastructure.Configuration;
 using Modbus2Mqtt.Infrastructure.DeviceDefinition;
+using Modbus2Mqtt.Modbus.ModbusRequest;
 using NLog;
 
 namespace Modbus2Mqtt.Modbus
@@ -13,16 +14,18 @@ namespace Modbus2Mqtt.Modbus
     {
         private readonly Configuration _configuration;
         private readonly IMediator _mediator;
+        private readonly ModbusRequestHandler _modbusRequestHandler;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
 
-        public TrafficInitiator(Configuration configuration, IMediator mediator)
+        public TrafficInitiator(Configuration configuration, IMediator mediator, ModbusRequestHandler modbusRequestHandler)
         {
             _configuration = configuration;
             _mediator = mediator;
+            _modbusRequestHandler = modbusRequestHandler;
         }
 
-        public async Task Start()
+        public async void Start()
         {
             var tasks = new List<Task>();
             var wait = 1000;
@@ -30,12 +33,11 @@ namespace Modbus2Mqtt.Modbus
             {
                 await Task.Delay(wait);
                 wait += 1000;
-                tasks.Add(Task.Run(() =>  { StartCommunication(slave).Wait(); }));
-                await Task.WhenAny(tasks);
+                tasks.Add(Task.Run(() =>  { StartCommunication(slave); }));
             }
         }
 
-        private static async Task StartCommunication(Slave slave)
+        private async Task StartCommunication(Slave slave)
         {
             var registers = new List<Register>();
             
@@ -72,7 +74,7 @@ namespace Modbus2Mqtt.Modbus
             {
                 foreach (var register in registers)
                 {
-                    ModbusRequestHandler.Handle(new ModbusRequest {Slave = slave, Register = register});
+                    _modbusRequestHandler.Handle(new Eventing.ModbusRequest.ModbusRequest {Slave = slave, Register = register});
                 }
                 await Task.Delay(slave.PollingInterval);
             }
