@@ -70,11 +70,17 @@ namespace Modbus2Mqtt.Modbus
                 return;
             }
 
+            var modbusRequests = new List<Eventing.ModbusRequest.ModbusRequest>();
+            foreach (var register in registers)
+            {
+                modbusRequests.Add(new Eventing.ModbusRequest.ModbusRequest {Slave = slave, Register = register});
+            }
+            
             while (true)
             {
-                foreach (var register in registers)
+                foreach (var modbusRequest in modbusRequests)
                 {
-                    _modbusRequestHandler.Handle(new Eventing.ModbusRequest.ModbusRequest {Slave = slave, Register = register});
+                    _modbusRequestHandler.Handle(modbusRequest);
                 }
                 await Task.Delay(slave.PollingInterval);
             }
