@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using MediatR;
 using Modbus2Mqtt.Eventing.Mqtt;
 using Modbus2Mqtt.Infrastructure.Configuration;
@@ -22,7 +23,7 @@ namespace Modbus2Mqtt.Mqtt
             _mediator = mediator;
         }
 
-        public void Start()
+        public async Task Start()
         {
             foreach (var slave in _configuration.Slave)
             {
@@ -34,10 +35,10 @@ namespace Modbus2Mqtt.Mqtt
                 {
                     var topic = "modbus2mqtt/set/" + slave.Name + "/" + register.Name;
                     Logger.Info($"Subscribing to: {topic} ");
-                    _mqttClient.SubscribeAsync(topic);
-                    _mqttClient.UseApplicationMessageReceivedHandler(e =>
+                    await _mqttClient.SubscribeAsync(topic);
+                    _mqttClient.UseApplicationMessageReceivedHandler(async e =>
                     {
-                        _mediator.Publish(new IncomingMessage
+                        await _mediator.Publish(new IncomingMessage
                         {
                             Message = e.ApplicationMessage.Payload.ToString(),
                             Topic = e.ApplicationMessage.Topic

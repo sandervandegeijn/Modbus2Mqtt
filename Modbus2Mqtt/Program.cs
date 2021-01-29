@@ -45,8 +45,10 @@ namespace Modbus2Mqtt
             
             var trafficInitiator = container.GetInstance<TrafficInitiator>();
             await trafficInitiator.Start();
+            
             var mqttListener = container.GetInstance<MqttListener>();
-            mqttListener.Start();
+            await mqttListener.Start();
+            
             while (true)
             {
                 await Task.Delay(1000);
