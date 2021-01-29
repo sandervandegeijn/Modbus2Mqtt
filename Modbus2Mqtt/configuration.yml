@@ -18,3 +18,4 @@ mqtt:
   password: ""
   tls: false
   client_id: "development"
+  main_topic: "modbus2mqtt-dev"

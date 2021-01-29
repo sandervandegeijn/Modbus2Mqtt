@@ -13,5 +13,7 @@
         public bool Tls { get; set; }
         
         public string ClientId { get; set; }
+        
+        public string MainTopic { get; set; }
     }
 }
