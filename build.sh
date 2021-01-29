@@ -5,7 +5,7 @@ changes=`git status | grep "Your branch is up-to-date" | wc -l`
 if [ $changes -eq 0 ]
 then
 	echo "Updating container"
-	docker stop modbus2mqtt-9600
+	#docker stop modbus2mqtt-9600
 
 	#docker rm modbus2mqtt-9600
 	#docker rmi modbus2mqtt
