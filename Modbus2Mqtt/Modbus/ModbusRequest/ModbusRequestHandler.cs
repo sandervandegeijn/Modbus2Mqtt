@@ -43,7 +43,6 @@ namespace Modbus2Mqtt.Modbus.ModbusRequest
 
                         try
                         {
-
                             //Function code 1
                             if (modbusRequest.Register.Function.ToLower().Equals("read_coil"))
                             {
@@ -75,6 +74,10 @@ namespace Modbus2Mqtt.Modbus.ModbusRequest
                         catch (CRCCheckFailedException e)
                         {
                             Logger.Error($"CRC exception for slave: {modbusRequest.Slave.Name} Register: {modbusRequest.Register.Name}");
+                        }
+                        catch (System.TimeoutException)
+                        {
+                            Logger.Error($"Timeout for slave: {modbusRequest.Slave.Name} Register: {modbusRequest.Register.Name}");
                         }
                     }
 
