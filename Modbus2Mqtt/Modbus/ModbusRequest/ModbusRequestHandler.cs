@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using EasyModbus;
+using EasyModbus.Exceptions;
 using MediatR;
 using Modbus2Mqtt.Eventing.ModbusResult;
 using NLog;
@@ -40,32 +41,40 @@ namespace Modbus2Mqtt.Modbus.ModbusRequest
                     {
                         _modbusClient.UnitIdentifier = Convert.ToByte(modbusRequest.Slave.SlaveId);
 
-                        //Function code 1
-                        if (modbusRequest.Register.Function.ToLower().Equals("read_coil"))
+                        try
                         {
-                            var result = _modbusClient.ReadCoils(modbusRequest.Register.Start, modbusRequest.Register.Registers);
-                            await _mediator.Publish(new ModbusCoilResult {Result = result, Register = modbusRequest.Register, Slave = modbusRequest.Slave});
-                        }
 
-                        //Function code 2
-                        if (modbusRequest.Register.Function.ToLower().Equals("read_discrete_input"))
-                        {
-                            var result = _modbusClient.ReadDiscreteInputs(modbusRequest.Register.Start, modbusRequest.Register.Registers);
-                            await _mediator.Publish(new ModbusCoilResult {Result = result, Register = modbusRequest.Register, Slave = modbusRequest.Slave});
-                        }
+                            //Function code 1
+                            if (modbusRequest.Register.Function.ToLower().Equals("read_coil"))
+                            {
+                                var result = _modbusClient.ReadCoils(modbusRequest.Register.Start, modbusRequest.Register.Registers);
+                                await _mediator.Publish(new ModbusCoilResult {Result = result, Register = modbusRequest.Register, Slave = modbusRequest.Slave});
+                            }
 
-                        //Function code 3
-                        if (modbusRequest.Register.Function.ToLower().Equals("read_holding_registers"))
-                        {
-                            var result = _modbusClient.ReadHoldingRegisters(modbusRequest.Register.Start, modbusRequest.Register.Registers);
-                            await _mediator.Publish(new ModbusRegisterResult {Result = result, Register = modbusRequest.Register, Slave = modbusRequest.Slave});
-                        }
+                            //Function code 2
+                            if (modbusRequest.Register.Function.ToLower().Equals("read_discrete_input"))
+                            {
+                                var result = _modbusClient.ReadDiscreteInputs(modbusRequest.Register.Start, modbusRequest.Register.Registers);
+                                await _mediator.Publish(new ModbusCoilResult {Result = result, Register = modbusRequest.Register, Slave = modbusRequest.Slave});
+                            }
 
-                        //Function code 4
-                        if (modbusRequest.Register.Function.ToLower().Equals("read_input_registers"))
+                            //Function code 3
+                            if (modbusRequest.Register.Function.ToLower().Equals("read_holding_registers"))
+                            {
+                                var result = _modbusClient.ReadHoldingRegisters(modbusRequest.Register.Start, modbusRequest.Register.Registers);
+                                await _mediator.Publish(new ModbusRegisterResult {Result = result, Register = modbusRequest.Register, Slave = modbusRequest.Slave});
+                            }
+
+                            //Function code 4
+                            if (modbusRequest.Register.Function.ToLower().Equals("read_input_registers"))
+                            {
+                                var result = _modbusClient.ReadInputRegisters(modbusRequest.Register.Start, modbusRequest.Register.Registers);
+                                await _mediator.Publish(new ModbusRegisterResult {Result = result, Register = modbusRequest.Register, Slave = modbusRequest.Slave});
+                            }
+                        }
+                        catch (CRCCheckFailedException e)
                         {
-                            var result = _modbusClient.ReadInputRegisters(modbusRequest.Register.Start, modbusRequest.Register.Registers);
-                            await _mediator.Publish(new ModbusRegisterResult {Result = result, Register = modbusRequest.Register, Slave = modbusRequest.Slave});
+                            Logger.Error($"CRC exception for slave: {modbusRequest.Slave.Name} Register: {modbusRequest.Register.Name}");
                         }
                     }
 
