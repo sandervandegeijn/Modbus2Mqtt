@@ -1,15 +1,13 @@
 ﻿using System.Threading.Tasks;
-using EasyModbus;
 using Lamar;
-using MediatR;
-using MediatR.Pipeline;
-using Modbus2Mqtt.Eventing.ModbusRequest;
+using Lamar.Microsoft.DependencyInjection;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Modbus2Mqtt.BackgroundServices;
 using Modbus2Mqtt.Infrastructure;
-using Modbus2Mqtt.Infrastructure.Configuration;
 using Modbus2Mqtt.Modbus;
-using Modbus2Mqtt.Modbus.ModbusRequest;
-using Modbus2Mqtt.Mqtt;
-using MQTTnet.Client;
 using NLog;
 
 namespace Modbus2Mqtt
@@ -22,37 +20,33 @@ namespace Modbus2Mqtt
         {
             Logger.Info("Starting application");
             
-            var container = new Container(x =>
-            {
-                x.Scan(_ =>
+            var builder = new HostBuilder()
+                .UseLamar()
+                .ConfigureContainer<ServiceRegistry>((context, services) =>
                 {
-                    _.AssemblyContainingType(typeof(Program));
-                    _.WithDefaultConventions();
-                    _.ConnectImplementationsToTypesClosing(typeof(IRequestHandler<,>));
-                    _.ConnectImplementationsToTypesClosing(typeof(INotificationHandler<>));
-                    _.ConnectImplementationsToTypesClosing(typeof(IRequestExceptionAction<>));
-                    _.ConnectImplementationsToTypesClosing(typeof(IRequestExceptionHandler<,,>));
+                    services.IncludeRegistry<Registry>();
+                })
+                .ConfigureAppConfiguration((hostingContext, config) =>
+                {
+                    config.AddJsonFile("appsettings.json", optional: true);
+                    config.AddEnvironmentVariables();
+                    if (args != null)
+                    {
+                        config.AddCommandLine(args);
+                    }
+                })
+                .ConfigureServices((hostContext, services) =>
+                {
+                    services.AddOptions();
+                    services.AddHostedService<ModbusRequestQueueBackgroundService>();
+                    services.AddHostedService<ModbusRequestPollerBackgroundService>();
+                })
+                .ConfigureLogging((hostingContext, logging) => {
+                    logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                    logging.AddConsole();
                 });
-                x.For<IMediator>().Use<Mediator>().Transient();
-                x.For<ServiceFactory>().Use(ctx => ctx.GetInstance);
-                x.For<ModbusClient>().Use(s => ModbusclientFactory.GetModbusClient());
-                x.For<Configuration>().Use(s => ConfigurationFactory.GetConfiguration());
-                x.For<IMqttClient>().Use(s => s.GetInstance<MqttConfigFactory>().GetMqttClient().Result).Singleton();
-            });
 
-            var modbusRequestHandler = container.GetInstance<ModbusRequestHandler>();
-            modbusRequestHandler.Start();
-            
-            var trafficInitiator = container.GetInstance<TrafficInitiator>();
-            trafficInitiator.Start();
-            
-            var mqttListener = container.GetInstance<MqttListener>();
-            mqttListener.Start();
-            
-            while (true)
-            {
-                await Task.Delay(1000);
-            }
+            await builder.RunConsoleAsync();
         }
     }
 }

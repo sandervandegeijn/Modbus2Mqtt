@@ -1,41 +1,41 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Threading;
 using System.Threading.Tasks;
 using EasyModbus;
 using EasyModbus.Exceptions;
 using MediatR;
+using Microsoft.Extensions.Hosting;
 using Modbus2Mqtt.Eventing.ModbusResult;
+using Modbus2Mqtt.Modbus;
 using NLog;
 
-namespace Modbus2Mqtt.Modbus.ModbusRequest
+namespace Modbus2Mqtt.BackgroundServices
 {
-    public class ModbusRequestHandler
+    public class ModbusRequestQueueBackgroundService : BackgroundService
     {
         private readonly ModbusClient _modbusClient;
         private readonly IMediator _mediator;
-        private static ConcurrentQueue<Eventing.ModbusRequest.ModbusRequest> _queue;
+        private static ConcurrentQueue<ModbusRequest> _queue;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public ModbusRequestHandler(ModbusClient modbusClient, IMediator mediator)
+        public ModbusRequestQueueBackgroundService(ModbusClient modbusClient, IMediator mediator)
         {
             _modbusClient = modbusClient;
             _mediator = mediator;
-            _queue = new ConcurrentQueue<Eventing.ModbusRequest.ModbusRequest>();
+            _queue = new ConcurrentQueue<ModbusRequest>();
         }
 
-        public void Handle(Eventing.ModbusRequest.ModbusRequest modbusRequest)
+        public void Handle(ModbusRequest modbusRequest)
         {
             _queue.Enqueue(modbusRequest);
         }
-
-        public async void Start()
+        
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            Logger.Info("Starting Modbus communication");
-            await Task.Run(async () =>
+            while (!stoppingToken.IsCancellationRequested)
             {
-                while (true)
-                {
-                    Logger.Info("Items in queue:" + _queue.Count);
+                Logger.Debug("Items in queue:" + _queue.Count);
                     _queue.TryDequeue(out var modbusRequest);
                     if (modbusRequest != null)
                     {
@@ -74,20 +74,22 @@ namespace Modbus2Mqtt.Modbus.ModbusRequest
                         catch (CRCCheckFailedException e)
                         {
                             Logger.Error($"CRC exception for slave: {modbusRequest.Slave.Name} Register: {modbusRequest.Register.Name}");
+                            Logger.Error(e);
                         }
-                        catch (System.TimeoutException)
+                        catch (TimeoutException e)
                         {
                             Logger.Error($"Timeout for slave: {modbusRequest.Slave.Name} Register: {modbusRequest.Register.Name}");
+                            Logger.Error(e);
                         }
                     }
 
                     if (_queue.IsEmpty)
                     {
-                        Logger.Info("Queue empty waiting 250ms");
-                        await Task.Delay(250);
+                        Logger.Debug("Queue empty waiting 100ms");
+                        await Task.Delay(100, stoppingToken);
                     }
-                }
-            });
+            }
         }
+        
     }
 }
