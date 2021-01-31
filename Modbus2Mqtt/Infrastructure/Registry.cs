@@ -2,6 +2,7 @@
 using Lamar;
 using MediatR;
 using MediatR.Pipeline;
+using Modbus2Mqtt.Infrastructure.YmlConfiguration;
 using MQTTnet.Client;
 
 namespace Modbus2Mqtt.Infrastructure
@@ -26,7 +27,7 @@ namespace Modbus2Mqtt.Infrastructure
             For<IMediator>().Use<Mediator>().Transient();
             For<ServiceFactory>().Use(ctx => ctx.GetInstance);
             For<ModbusClient>().Use(s => ModbusclientFactory.GetModbusClient());
-            For<Configuration.Configuration>().Use(s => ConfigurationFactory.GetConfiguration());
+            For<YmlConfiguration.Configuration.Configuration>().Use(s => ConfigurationFactory.GetConfiguration());
             For<IMqttClient>().Use(s => s.GetInstance<MqttConfigFactory>().GetMqttClient().Result).Singleton();
         }
     }

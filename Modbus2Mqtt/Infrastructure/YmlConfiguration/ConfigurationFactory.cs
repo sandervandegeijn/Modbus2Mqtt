@@ -4,15 +4,15 @@ using NLog;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
-namespace Modbus2Mqtt.Infrastructure
+namespace Modbus2Mqtt.Infrastructure.YmlConfiguration
 {
     public static class ConfigurationFactory
     {
-        private static Configuration.Configuration Configuration { get; set; }
+        private static YmlConfiguration.Configuration.Configuration Configuration { get; set; }
         
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         
-        public static Configuration.Configuration GetConfiguration()
+        public static YmlConfiguration.Configuration.Configuration GetConfiguration()
         {
             //Singleton
             if (Configuration != null)
@@ -29,7 +29,7 @@ namespace Modbus2Mqtt.Infrastructure
                 .WithNamingConvention(UnderscoredNamingConvention.Instance) 
                 .Build();
             
-            var config = deserializer.Deserialize<Configuration.Configuration>(yml);
+            var config = deserializer.Deserialize<YmlConfiguration.Configuration.Configuration>(yml);
             
             foreach (var slave in config.Slave)
             {

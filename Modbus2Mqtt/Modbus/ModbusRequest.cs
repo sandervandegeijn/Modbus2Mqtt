@@ -1,6 +1,6 @@
 ﻿using System;
-using Modbus2Mqtt.Infrastructure.Configuration;
-using Modbus2Mqtt.Infrastructure.DeviceDefinition;
+using Modbus2Mqtt.Infrastructure.YmlConfiguration.Configuration;
+using Modbus2Mqtt.Infrastructure.YmlConfiguration.DeviceDefinition;
 
 namespace Modbus2Mqtt.Modbus
 {

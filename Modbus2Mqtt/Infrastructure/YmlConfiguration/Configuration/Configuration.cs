@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using YamlDotNet.Serialization;
 
-namespace Modbus2Mqtt.Infrastructure.Configuration
+namespace Modbus2Mqtt.Infrastructure.YmlConfiguration.Configuration
 {
     public class Configuration
     {

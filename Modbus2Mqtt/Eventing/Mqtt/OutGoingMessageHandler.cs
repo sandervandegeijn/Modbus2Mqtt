@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
-using Modbus2Mqtt.Infrastructure.Configuration;
+using Modbus2Mqtt.Infrastructure.YmlConfiguration.Configuration;
 using MQTTnet.Client;
 
 namespace Modbus2Mqtt.Eventing.Mqtt

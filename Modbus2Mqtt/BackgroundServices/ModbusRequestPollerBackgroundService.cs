@@ -4,8 +4,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
-using Modbus2Mqtt.Infrastructure.Configuration;
-using Modbus2Mqtt.Infrastructure.DeviceDefinition;
+using Modbus2Mqtt.Infrastructure.YmlConfiguration.Configuration;
+using Modbus2Mqtt.Infrastructure.YmlConfiguration.DeviceDefinition;
 using Modbus2Mqtt.Modbus;
 using NLog;
 

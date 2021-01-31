@@ -1,4 +1,4 @@
-﻿namespace Modbus2Mqtt.Infrastructure.DeviceDefinition
+﻿namespace Modbus2Mqtt.Infrastructure.YmlConfiguration.DeviceDefinition
 {
     public class Register
     {

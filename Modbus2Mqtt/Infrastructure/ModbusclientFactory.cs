@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO.Ports;
 using EasyModbus;
+using Modbus2Mqtt.Infrastructure.YmlConfiguration;
 
 namespace Modbus2Mqtt.Infrastructure
 {

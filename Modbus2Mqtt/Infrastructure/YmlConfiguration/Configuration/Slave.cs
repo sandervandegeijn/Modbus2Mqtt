@@ -1,4 +1,4 @@
-﻿namespace Modbus2Mqtt.Infrastructure.Configuration
+﻿namespace Modbus2Mqtt.Infrastructure.YmlConfiguration.Configuration
 {
     public class Slave
     {

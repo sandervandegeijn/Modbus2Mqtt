@@ -11,14 +11,14 @@ namespace Modbus2Mqtt.Infrastructure
 {
     public class MqttConfigFactory
     {
-        private readonly Configuration.Configuration _configuration;
+        private readonly YmlConfiguration.Configuration.Configuration _configuration;
         private readonly IMediator _mediator;
         private readonly MqttFactory _mqttFactory;
         private readonly IMqttClientOptions _mqttClientOptions;
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private static IMqttClient MqttClient { get; set; }
 
-        public MqttConfigFactory(Configuration.Configuration configuration, IMediator mediator)
+        public MqttConfigFactory(YmlConfiguration.Configuration.Configuration configuration, IMediator mediator)
         {
             _configuration = configuration;
             _mediator = mediator;

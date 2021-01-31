@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Reflection;
+using Modbus2Mqtt.Infrastructure.YmlConfiguration.DeviceDefinition;
 using NLog;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
@@ -10,7 +11,7 @@ namespace Modbus2Mqtt.Infrastructure
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         
-        public static DeviceDefinition.DeviceDefition GetDevice(string name)
+        public static DeviceDefition GetDevice(string name)
         {
             var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "DeviceTemplates/" + name + ".yml");
             Logger.Info("Trying to parse device template: "+path);
@@ -19,7 +20,7 @@ namespace Modbus2Mqtt.Infrastructure
             var deserializer = new DeserializerBuilder()
                 .WithNamingConvention(UnderscoredNamingConvention.Instance)
                 .Build();
-            return deserializer.Deserialize<DeviceDefinition.DeviceDefition>(yml);
+            return deserializer.Deserialize<DeviceDefition>(yml);
         }
     }
 }
