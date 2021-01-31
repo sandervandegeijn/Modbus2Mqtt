@@ -17,7 +17,7 @@ namespace Modbus2Mqtt.Infrastructure.YmlConfiguration
         
         private static YmlConfiguration.Configuration.Configuration Configuration { get; set; }
 
-        public YmlConfiguration.Configuration.Configuration GetConfiguration()
+        public static YmlConfiguration.Configuration.Configuration GetConfiguration()
         {
             //Singleton
             if (Configuration != null)
@@ -26,7 +26,7 @@ namespace Modbus2Mqtt.Infrastructure.YmlConfiguration
             }
 
             var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "configuration.yml");
-            _logger.LogInformation("Trying to parse configuration: "+path);
+            //_logger.LogInformation("Trying to parse configuration: "+path);
             
             var yml = File.ReadAllText(path);
             

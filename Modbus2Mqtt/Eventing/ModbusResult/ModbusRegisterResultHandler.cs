@@ -3,20 +3,21 @@ using System.Threading;
 using System.Threading.Tasks;
 using EasyModbus;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Modbus2Mqtt.Eventing.Mqtt;
-using NLog;
 
 namespace Modbus2Mqtt.Eventing.ModbusResult
 {
     public class ModbusRegisterResultHandler : INotificationHandler<ModbusRegisterResult>
     {
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        
-        private readonly IMediator _mediator;
 
-        public ModbusRegisterResultHandler(IMediator mediator)
+        private readonly IMediator _mediator;
+        private readonly ILogger<ModbusRegisterResultHandler> _logger;
+
+        public ModbusRegisterResultHandler(IMediator mediator, ILogger<ModbusRegisterResultHandler> logger)
         {
             _mediator = mediator;
+            _logger = logger;
         }
         
         public async Task Handle(ModbusRegisterResult registerResult, CancellationToken cancellationToken)
@@ -32,7 +33,7 @@ namespace Modbus2Mqtt.Eventing.ModbusResult
                 {
                     parsedResult = ModbusClient.ConvertRegistersToFloat(registerResult.Result, ModbusClient.RegisterOrder.LowHigh);
                 }
-                Logger.Info("Result for: " + registerResult.Slave.Name + " register: " + registerResult.Register.Name +" : " + parsedResult);
+                _logger.LogInformation("Result for: " + registerResult.Slave.Name + " register: " + registerResult.Register.Name +" : " + parsedResult);
                 await _mediator.Publish(new OutGoingMessage {Register = registerResult.Register, Slave = registerResult.Slave, Message = parsedResult.ToString(CultureInfo.InvariantCulture)}, cancellationToken);
             }
         }

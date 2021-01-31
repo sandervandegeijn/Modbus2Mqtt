@@ -1,11 +1,11 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.Extensions.Logging;
 using Modbus2Mqtt.Eventing.Mqtt;
 using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Client.Options;
-using NLog;
 
 namespace Modbus2Mqtt.Infrastructure
 {
@@ -13,15 +13,17 @@ namespace Modbus2Mqtt.Infrastructure
     {
         private readonly YmlConfiguration.Configuration.Configuration _configuration;
         private readonly IMediator _mediator;
+        private readonly ILogger<MqttConfigFactory> _logger;
         private readonly MqttFactory _mqttFactory;
         private readonly IMqttClientOptions _mqttClientOptions;
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         private static IMqttClient MqttClient { get; set; }
 
-        public MqttConfigFactory(YmlConfiguration.Configuration.Configuration configuration, IMediator mediator)
+        public MqttConfigFactory(YmlConfiguration.Configuration.Configuration configuration, IMediator mediator, ILogger<MqttConfigFactory> logger)
         {
             _configuration = configuration;
             _mediator = mediator;
+            _logger = logger;
             _mqttFactory = new MqttFactory();
             
             var options = new MqttClientOptionsBuilder()
@@ -71,7 +73,7 @@ namespace Modbus2Mqtt.Infrastructure
                 foreach (var register in registers)
                 {
                     var topic = "modbus2mqtt/set/" + slave.Name + "/" + register.Name;
-                    Logger.Info($"Subscribing to: {topic} ");
+                    _logger.LogInformation($"Subscribing to: {topic} ");
                     await MqttClient.SubscribeAsync(topic);
                     MqttClient.UseApplicationMessageReceivedHandler(async e =>
                     {

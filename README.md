@@ -1,3 +1,7 @@
 # Modbus2Mqtt
 
-This is a very very early version of a modbus2mqtt bridge, code is still rough. Currently it lacks support for a *lot* of functions, but the basic infrastructure is there. To use it, view the configuration.yml example. To add devices have a look at the DeviceTemplates directory (EastronSDM120.yml) as an example.
+Reading of ModbusRTU data is working, writing from MQTT to modbus still has te be implemented. On Linux however it suffering from a serieus malfunctioning System.IO implementation in .NET core as referenced here: https://github.com/dotnet/runtime/issues/2379 This is resulting in high cpu usage and some stability problems. Have not found an alternative yet....
+----
+Device definitions are in the DeviceTemplates folder, it is quite easy to add other device types.
+Reference the filename in the configuration.yml as shown in the examples.
+Dockerfile can be used to build an image for Docker, this works.

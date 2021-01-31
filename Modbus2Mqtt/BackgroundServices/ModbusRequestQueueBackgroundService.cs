@@ -71,11 +71,11 @@ namespace Modbus2Mqtt.BackgroundServices
                             await _mediator.Publish(new ModbusRegisterResult {Result = result, Register = modbusRequest.Register, Slave = modbusRequest.Slave}, stoppingToken);
                         }
                     }
-                    catch (CRCCheckFailedException e)
+                    catch (CRCCheckFailedException)
                     {
                         _logger.LogError($"CRC exception for slave: {modbusRequest.Slave.Name} Register: {modbusRequest.Register.Name}");
                     }
-                    catch (TimeoutException e)
+                    catch (TimeoutException)
                     {
                         _logger.LogError($"Timeout for slave: {modbusRequest.Slave.Name} Register: {modbusRequest.Register.Name}");
                     }
