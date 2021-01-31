@@ -54,14 +54,14 @@ namespace Modbus2Mqtt.BackgroundServices
                             where m.NextExecutionTime < DateTime.Now
                             select m).ToList();
                     
-                    Logger.Debug($"Number of requests to be executed: {toBeExecuted.Count}");
+                    //Logger.Debug($"Number of requests to be executed: {toBeExecuted.Count}");
                     
                     foreach (var modbusRequest in toBeExecuted)
                     {
-                        _modbusRequestQueueBackgroundService.Handle(modbusRequest);
-                        Logger.Debug($"Current execution time for modbusrequest {modbusRequest} : {modbusRequest.NextExecutionTime}");
+                        ModbusRequestQueueBackgroundService.Handle(modbusRequest);
+                        //Logger.Debug($"Current execution time for modbusrequest {modbusRequest} : {modbusRequest.NextExecutionTime}");
                         modbusRequest.NextExecutionTime = DateTime.Now.AddMilliseconds(modbusRequest.Slave.PollingInterval);
-                        Logger.Debug($"New execution time for modbusrequest {modbusRequest} : {modbusRequest.NextExecutionTime}");
+                        //Logger.Debug($"New execution time for modbusrequest {modbusRequest} : {modbusRequest.NextExecutionTime}");
                     }
                     await Task.Delay(100, stoppingToken);
                 }
