@@ -4,10 +4,10 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Modbus2Mqtt.Infrastructure.YmlConfiguration.Configuration;
 using Modbus2Mqtt.Infrastructure.YmlConfiguration.DeviceDefinition;
 using Modbus2Mqtt.Modbus;
-using NLog;
 
 namespace Modbus2Mqtt.BackgroundServices
 {
@@ -15,20 +15,21 @@ namespace Modbus2Mqtt.BackgroundServices
     {
         private readonly Configuration _configuration;
         private readonly ModbusRequestQueueBackgroundService _modbusRequestQueueBackgroundService;
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+        private readonly ILogger _logger;
 
 
-        public ModbusRequestPollerBackgroundService(Configuration configuration, ModbusRequestQueueBackgroundService modbusRequestQueueBackgroundService)
+        public ModbusRequestPollerBackgroundService(Configuration configuration, ModbusRequestQueueBackgroundService modbusRequestQueueBackgroundService, ILogger<ModbusRequestPollerBackgroundService> logger)
         {
             _configuration = configuration;
             _modbusRequestQueueBackgroundService = modbusRequestQueueBackgroundService;
+            _logger = logger;
         }
         
         
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             var slaves = _configuration.Slave;
-            Logger.Debug($"Number of slaves: {slaves.Count}");
+            _logger.LogDebug($"Number of slaves: {slaves.Count}");
             
             
             var modbusRequestsList = new List<ModbusRequest>();
@@ -68,7 +69,7 @@ namespace Modbus2Mqtt.BackgroundServices
             }
         }
 
-        private static IEnumerable<ModbusRequest> GetModbusRequestListForSlave(Slave slave)
+        private IEnumerable<ModbusRequest> GetModbusRequestListForSlave(Slave slave)
         {
             var registers = new List<Register>();
             
@@ -95,7 +96,7 @@ namespace Modbus2Mqtt.BackgroundServices
 
             if (registers == null || registers.Count == 0)
             {
-                Logger.Error("No registers for device " + slave.Name);
+                _logger.LogError("No registers for device " + slave.Name);
                 throw new ArgumentException($"No registers for device {slave.Name} ");
             }
 

@@ -13,7 +13,6 @@
       <PackageReference Include="MediatR" Version="9.0.0" />
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
       <PackageReference Include="MQTTnet" Version="3.0.14-rc7" />
-      <PackageReference Include="NLog" Version="4.7.7" />
       <PackageReference Include="System.IO.Ports" Version="5.0.0" />
       <PackageReference Include="YamlDotNet" Version="9.1.5-issue-templates-0002" />
     </ItemGroup>

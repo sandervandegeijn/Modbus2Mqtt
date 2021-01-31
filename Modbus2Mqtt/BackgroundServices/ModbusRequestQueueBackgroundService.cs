@@ -6,9 +6,9 @@ using EasyModbus;
 using EasyModbus.Exceptions;
 using MediatR;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Modbus2Mqtt.Eventing.ModbusResult;
 using Modbus2Mqtt.Modbus;
-using NLog;
 
 namespace Modbus2Mqtt.BackgroundServices
 {
@@ -16,13 +16,14 @@ namespace Modbus2Mqtt.BackgroundServices
     {
         private readonly ModbusClient _modbusClient;
         private readonly IMediator _mediator;
+        private readonly ILogger<ModbusRequestQueueBackgroundService> _logger;
         private static ConcurrentQueue<ModbusRequest> _queue;
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public ModbusRequestQueueBackgroundService(ModbusClient modbusClient, IMediator mediator)
+        public ModbusRequestQueueBackgroundService(ModbusClient modbusClient, IMediator mediator, ILogger<ModbusRequestQueueBackgroundService> logger)
         {
             _modbusClient = modbusClient;
             _mediator = mediator;
+            _logger = logger;
             _queue = new ConcurrentQueue<ModbusRequest>();
         }
 
@@ -72,13 +73,11 @@ namespace Modbus2Mqtt.BackgroundServices
                     }
                     catch (CRCCheckFailedException e)
                     {
-                        Logger.Error($"CRC exception for slave: {modbusRequest.Slave.Name} Register: {modbusRequest.Register.Name}");
-                        Logger.Error(e);
+                        _logger.LogError($"CRC exception for slave: {modbusRequest.Slave.Name} Register: {modbusRequest.Register.Name}");
                     }
                     catch (TimeoutException e)
                     {
-                        Logger.Error($"Timeout for slave: {modbusRequest.Slave.Name} Register: {modbusRequest.Register.Name}");
-                        Logger.Error(e);
+                        _logger.LogError($"Timeout for slave: {modbusRequest.Slave.Name} Register: {modbusRequest.Register.Name}");
                     }
                 }
 

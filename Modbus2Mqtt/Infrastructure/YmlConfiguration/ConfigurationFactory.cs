@@ -1,18 +1,23 @@
 ﻿using System.IO;
 using System.Reflection;
-using NLog;
+using Microsoft.Extensions.Logging;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
 namespace Modbus2Mqtt.Infrastructure.YmlConfiguration
 {
-    public static class ConfigurationFactory
+    public class ConfigurationFactory
     {
+        private readonly ILogger<ConfigurationFactory> _logger;
+
+        public ConfigurationFactory(ILogger<ConfigurationFactory> logger)
+        {
+            _logger = logger;
+        }
+        
         private static YmlConfiguration.Configuration.Configuration Configuration { get; set; }
-        
-        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-        
-        public static YmlConfiguration.Configuration.Configuration GetConfiguration()
+
+        public YmlConfiguration.Configuration.Configuration GetConfiguration()
         {
             //Singleton
             if (Configuration != null)
@@ -21,7 +26,7 @@ namespace Modbus2Mqtt.Infrastructure.YmlConfiguration
             }
 
             var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "configuration.yml");
-            Logger.Info("Trying to parse configuration: "+path);
+            _logger.LogInformation("Trying to parse configuration: "+path);
             
             var yml = File.ReadAllText(path);
             
