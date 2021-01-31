@@ -40,7 +40,6 @@ namespace Modbus2Mqtt.BackgroundServices
                 if (modbusRequest != null)
                 {
                     _modbusClient.UnitIdentifier = Convert.ToByte(modbusRequest.Slave.SlaveId);
-
                     try
                     {
                         //Function code 1
