@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
 using EasyModbus;
@@ -24,14 +25,15 @@ namespace Modbus2Mqtt.Eventing.ModbusResult
         {
             if (registerResult.Register.DataType.Equals("float"))
             {
-                float parsedResult = 0;
+                //TODO implement round based on configuration
+                double parsedResult = 0;
                 if (registerResult.Slave.DeviceDefition.Endianness.ToLower().Equals("big-endian"))
                 {
-                    parsedResult = ModbusClient.ConvertRegistersToFloat(registerResult.Result, ModbusClient.RegisterOrder.HighLow);
+                    parsedResult = Math.Round(ModbusClient.ConvertRegistersToFloat(registerResult.Result, ModbusClient.RegisterOrder.HighLow),3);
                 }
                 if (registerResult.Slave.DeviceDefition.Endianness.ToLower().Equals("little-endian"))
                 {
-                    parsedResult = ModbusClient.ConvertRegistersToFloat(registerResult.Result, ModbusClient.RegisterOrder.LowHigh);
+                    parsedResult = Math.Round(ModbusClient.ConvertRegistersToFloat(registerResult.Result, ModbusClient.RegisterOrder.LowHigh));
                 }
                 _logger.LogInformation("Result for: " + registerResult.Slave.Name + " register: " + registerResult.Register.Name +" : " + parsedResult);
                 await _mediator.Publish(new OutGoingMessage {Register = registerResult.Register, Slave = registerResult.Slave, Message = parsedResult.ToString(CultureInfo.InvariantCulture)}, cancellationToken);
