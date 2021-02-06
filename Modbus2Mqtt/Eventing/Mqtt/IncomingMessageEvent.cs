@@ -1,6 +1,6 @@
 ﻿namespace Modbus2Mqtt.Eventing.Mqtt
 {
-    public class IncomingMessage
+    public class IncomingMessageEvent
     {
         public string Topic { get; set; }
         

@@ -1,15 +1,15 @@
-﻿using MediatR;
+﻿using System;
 using Modbus2Mqtt.Infrastructure.YmlConfiguration.Configuration;
 using Modbus2Mqtt.Infrastructure.YmlConfiguration.DeviceDefinition;
 
-namespace Modbus2Mqtt.Eventing.Mqtt
+namespace Modbus2Mqtt.Infrastructure.Modbus
 {
-    public class OutGoingMessage : INotification
+    public class ModbusRequest
     {
-        public Slave Slave { get; set; }
-        
         public Register Register { get; set; }
         
-        public string Message { get; set; }
+        public Slave Slave { get; set; }
+        
+        public DateTime NextExecutionTime { get; set; }
     }
 }

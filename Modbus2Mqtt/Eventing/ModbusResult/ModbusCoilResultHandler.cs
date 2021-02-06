@@ -6,7 +6,7 @@ using Modbus2Mqtt.Eventing.Mqtt;
 
 namespace Modbus2Mqtt.Eventing.ModbusResult
 {
-    public class ModbusCoilResultHandler : INotificationHandler<ModbusCoilResult>
+    public class ModbusCoilResultHandler : INotificationHandler<ModbusCoilResultEvent>
     {
         private readonly IMediator _mediator;
         private readonly ILogger<ModbusCoilResultHandler> _logger;
@@ -17,10 +17,10 @@ namespace Modbus2Mqtt.Eventing.ModbusResult
             _logger = logger;
         }
 
-        public async Task Handle(ModbusCoilResult coilResult, CancellationToken cancellationToken)
+        public async Task Handle(ModbusCoilResultEvent coilResultEvent, CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Result for: " + coilResult.Slave.Name + " register: " + coilResult.Slave.Name +" : " + coilResult);
-            await _mediator.Publish(new OutGoingMessage {Register = coilResult.Register, Slave = coilResult.Slave, Message = coilResult.ToString()});
+            _logger.LogInformation("Result for: " + coilResultEvent.Slave.Name + " register: " + coilResultEvent.Slave.Name +" : " + coilResultEvent);
+            await _mediator.Publish(new OutGoingMessageEvent {Register = coilResultEvent.Register, Slave = coilResultEvent.Slave, Message = coilResultEvent.ToString()});
         }
     }
 }

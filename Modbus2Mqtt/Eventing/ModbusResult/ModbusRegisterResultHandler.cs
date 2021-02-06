@@ -9,7 +9,7 @@ using Modbus2Mqtt.Eventing.Mqtt;
 
 namespace Modbus2Mqtt.Eventing.ModbusResult
 {
-    public class ModbusRegisterResultHandler : INotificationHandler<ModbusRegisterResult>
+    public class ModbusRegisterResultHandler : INotificationHandler<ModbusRegisterResultEvent>
     {
 
         private readonly IMediator _mediator;
@@ -21,22 +21,22 @@ namespace Modbus2Mqtt.Eventing.ModbusResult
             _logger = logger;
         }
         
-        public async Task Handle(ModbusRegisterResult registerResult, CancellationToken cancellationToken)
+        public async Task Handle(ModbusRegisterResultEvent registerResultEvent, CancellationToken cancellationToken)
         {
-            if (registerResult.Register.DataType.Equals("float"))
+            if (registerResultEvent.Register.DataType.Equals("float"))
             {
                 //TODO implement round based on configuration
                 double parsedResult = 0;
-                if (registerResult.Slave.DeviceDefition.Endianness.ToLower().Equals("big-endian"))
+                if (registerResultEvent.Slave.DeviceDefition.Endianness.ToLower().Equals("big-endian"))
                 {
-                    parsedResult = Math.Round(ModbusClient.ConvertRegistersToFloat(registerResult.Result, ModbusClient.RegisterOrder.HighLow),3);
+                    parsedResult = Math.Round(ModbusClient.ConvertRegistersToFloat(registerResultEvent.Result, ModbusClient.RegisterOrder.HighLow),3);
                 }
-                if (registerResult.Slave.DeviceDefition.Endianness.ToLower().Equals("little-endian"))
+                if (registerResultEvent.Slave.DeviceDefition.Endianness.ToLower().Equals("little-endian"))
                 {
-                    parsedResult = Math.Round(ModbusClient.ConvertRegistersToFloat(registerResult.Result, ModbusClient.RegisterOrder.LowHigh), 3);
+                    parsedResult = Math.Round(ModbusClient.ConvertRegistersToFloat(registerResultEvent.Result, ModbusClient.RegisterOrder.LowHigh), 3);
                 }
-                _logger.LogInformation("Result for: " + registerResult.Slave.Name + " register: " + registerResult.Register.Name +" : " + parsedResult);
-                await _mediator.Publish(new OutGoingMessage {Register = registerResult.Register, Slave = registerResult.Slave, Message = parsedResult.ToString(CultureInfo.InvariantCulture)}, cancellationToken);
+                _logger.LogInformation("Result for: " + registerResultEvent.Slave.Name + " register: " + registerResultEvent.Register.Name +" : " + parsedResult);
+                await _mediator.Publish(new OutGoingMessageEvent {Register = registerResultEvent.Register, Slave = registerResultEvent.Slave, Message = parsedResult.ToString(CultureInfo.InvariantCulture)}, cancellationToken);
             }
         }
     }

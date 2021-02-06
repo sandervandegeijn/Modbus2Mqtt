@@ -2,14 +2,14 @@
 using Modbus2Mqtt.Infrastructure.YmlConfiguration.Configuration;
 using Modbus2Mqtt.Infrastructure.YmlConfiguration.DeviceDefinition;
 
-namespace Modbus2Mqtt.Eventing.ModbusResult
+namespace Modbus2Mqtt.Eventing.Mqtt
 {
-    public class ModbusRegisterResult: INotification
+    public class OutGoingMessageEvent : INotification
     {
-        public Register Register { get; set; }
-        
         public Slave Slave { get; set; }
         
-        public int[] Result { get; set; }
+        public Register Register { get; set; }
+        
+        public string Message { get; set; }
     }
 }

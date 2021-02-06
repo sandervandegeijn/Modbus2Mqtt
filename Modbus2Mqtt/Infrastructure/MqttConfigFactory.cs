@@ -77,7 +77,7 @@ namespace Modbus2Mqtt.Infrastructure
                     await MqttClient.SubscribeAsync(topic);
                     MqttClient.UseApplicationMessageReceivedHandler(async e =>
                     {
-                        await _mediator.Publish(new IncomingMessage
+                        await _mediator.Publish(new IncomingMessageEvent
                         {
                             Message = e.ApplicationMessage.Payload.ToString(),
                             Topic = e.ApplicationMessage.Topic
