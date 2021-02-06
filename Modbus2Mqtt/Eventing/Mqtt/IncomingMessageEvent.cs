@@ -1,6 +1,8 @@
-﻿namespace Modbus2Mqtt.Eventing.Mqtt
+﻿using MediatR;
+
+namespace Modbus2Mqtt.Eventing.Mqtt
 {
-    public class IncomingMessageEvent
+    public class IncomingMessageEvent : INotification
     {
         public string Topic { get; set; }
         
