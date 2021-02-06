@@ -10,9 +10,9 @@ namespace Modbus2Mqtt.Eventing.Mqtt
 {
     public class IncomingMessageHandler: INotificationHandler<IncomingMessageEvent>
     {
-        private readonly ILogger<IncomingMessageEvent> _logger;
+        private readonly ILogger<IncomingMessageHandler> _logger;
 
-        public IncomingMessageHandler(ILogger<IncomingMessageEvent> logger)
+        public IncomingMessageHandler(ILogger<IncomingMessageHandler> logger)
         {
             _logger = logger;
         }
