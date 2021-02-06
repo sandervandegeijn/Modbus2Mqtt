@@ -33,7 +33,7 @@ namespace Modbus2Mqtt.Eventing.ModbusResult
                 }
                 if (registerResult.Slave.DeviceDefition.Endianness.ToLower().Equals("little-endian"))
                 {
-                    parsedResult = Math.Round(ModbusClient.ConvertRegistersToFloat(registerResult.Result, ModbusClient.RegisterOrder.LowHigh));
+                    parsedResult = Math.Round(ModbusClient.ConvertRegistersToFloat(registerResult.Result, ModbusClient.RegisterOrder.LowHigh), 3);
                 }
                 _logger.LogInformation("Result for: " + registerResult.Slave.Name + " register: " + registerResult.Register.Name +" : " + parsedResult);
                 await _mediator.Publish(new OutGoingMessage {Register = registerResult.Register, Slave = registerResult.Slave, Message = parsedResult.ToString(CultureInfo.InvariantCulture)}, cancellationToken);
