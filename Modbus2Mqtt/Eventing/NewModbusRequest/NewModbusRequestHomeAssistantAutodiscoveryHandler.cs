@@ -19,11 +19,11 @@ namespace Modbus2Mqtt.Eventing.NewModbusRequest
             _mqttClient = mqttClient;
             _mqttTopicGenerator = mqttTopicGenerator;
         }
-        public Task Handle(NewModbusRequestEvent newModbusRequestEvent, CancellationToken cancellationToken)
+        public async Task Handle(NewModbusRequestEvent newModbusRequestEvent, CancellationToken cancellationToken)
         {
             var message = AssembleMessage(newModbusRequestEvent.ModbusRequest);
-            //await _mqttClient.PublishAsync(_mqttTopicGenerator.GenerateHomeAssistantAutodiscoveryTopic(newModbusRequestEvent.ModbusRequest.Slave, newModbusRequestEvent.ModbusRequest.Register), message, true);
-            return Task.CompletedTask;
+            await _mqttClient.PublishAsync(_mqttTopicGenerator.GenerateAvailabilityTopic(), "online", true);
+            await _mqttClient.PublishAsync(_mqttTopicGenerator.GenerateHomeAssistantAutodiscoveryTopic(newModbusRequestEvent.ModbusRequest.Slave, newModbusRequestEvent.ModbusRequest.Register), message, true);
         }
 
         private string AssembleMessage(ModbusRequest modbusRequest)
@@ -32,6 +32,9 @@ namespace Modbus2Mqtt.Eventing.NewModbusRequest
             {
                 Identifiers = $"modbus2mqtt-{modbusRequest.Slave.Name}",
                 Name = modbusRequest.Slave.Name,
+                Manufacturer = "Modbus2Mqtt",
+                Model = modbusRequest.Slave.Name,
+                SoftwareVersion = "1.0"
             };
 
             var message = new Message
@@ -40,7 +43,9 @@ namespace Modbus2Mqtt.Eventing.NewModbusRequest
                 Name = modbusRequest.Register.Name,
                 StateTopic = _mqttTopicGenerator.GenerateStateTopic(modbusRequest.Slave, modbusRequest.Register),
                 UniqueId = $"modbus2mqtt-{modbusRequest.Slave.Name}-{modbusRequest.Register.Name}",
-                Device = device
+                Device = device, 
+                Icon = "mdi:leak",
+                AvailabilityTopic = _mqttTopicGenerator.GenerateAvailabilityTopic()
             };
 
             return JsonSerializer.Serialize(message);

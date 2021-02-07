@@ -10,7 +10,7 @@ namespace Modbus2Mqtt.Eventing.NewModbusRequest.HomeAssistantAutodiscovery
         [JsonPropertyName("icon")]
         public string Icon { get; set; }
         
-        [JsonPropertyName("unit_of_measurement")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
         
         [JsonPropertyName("state_topic")]

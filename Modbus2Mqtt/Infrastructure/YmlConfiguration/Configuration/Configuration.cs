@@ -14,6 +14,8 @@ namespace Modbus2Mqtt.Infrastructure.YmlConfiguration.Configuration
         
         public decimal Stopbits { get; set; }
         
+        public string HomeassistantAutoDiscoveryPrefix { get; set; }
+        
         public List<Slave> Slave { get; set; }
         
         public Mqtt Mqtt { get; set; }

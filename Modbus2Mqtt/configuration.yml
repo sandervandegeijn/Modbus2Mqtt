@@ -3,11 +3,12 @@ baudrate: 9600
 databits: 8
 parity: none # none even mark odd space
 stopbits: 1 #0 1 1.5 2
+homeassistant_auto_discovery_prefix: "homeassistant" #default: homeassistant
 slave:
   - name: eastron_test
     type: EastronSDM120
     slave_id: 1
-    polling_interval: 1000 #ms
+    polling_interval: 10000 #ms
     priority: 1 #highest will always be executed first
     include: ""
     exclude: "voltage" #voltage;
