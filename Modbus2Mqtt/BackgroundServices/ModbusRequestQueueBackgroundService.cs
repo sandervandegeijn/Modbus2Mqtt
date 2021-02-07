@@ -30,8 +30,16 @@ namespace Modbus2Mqtt.BackgroundServices
 
         public static void Handle(ModbusRequest modbusRequest)
         {
-            _queue.Enqueue(modbusRequest);
-            _queue.AsParallel().OrderBy(x => x.Slave.Priority);
+            var checkForDouble = (from q in _queue
+                where q.Slave.Name.Equals(modbusRequest.Slave.Name) &&
+                      q.Register.Start.Equals(modbusRequest.Register.Start)
+                select q).Count();
+
+            if (checkForDouble == 0)
+            {
+                _queue.Enqueue(modbusRequest);
+                _queue.AsParallel().OrderBy(x => x.Slave.Priority);    
+            }
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
