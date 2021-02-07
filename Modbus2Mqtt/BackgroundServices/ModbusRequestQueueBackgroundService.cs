@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using EasyModbus;
@@ -30,13 +31,14 @@ namespace Modbus2Mqtt.BackgroundServices
         public static void Handle(ModbusRequest modbusRequest)
         {
             _queue.Enqueue(modbusRequest);
+            _queue.AsParallel().OrderBy(x => x.Slave.Priority);
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             while (!stoppingToken.IsCancellationRequested)
             {
-                //Logger.Debug("Items in queue:" + _queue.Count);
+                _logger.LogDebug("Items in queue:" + _queue.Count);
                 _queue.TryDequeue(out var modbusRequest);
                 if (modbusRequest != null)
                 {
