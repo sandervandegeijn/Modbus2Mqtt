@@ -17,5 +17,10 @@
         public string Include { get; set; }
         
         public DeviceDefinition.DeviceDefition DeviceDefition { get; set; }
+
+        public string GetStrippedName()
+        {
+            return Name.StripNonAlphaNumeric();
+        }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using Modbus2Mqtt.Infrastructure.YmlConfiguration.Configuration;
+﻿using Modbus2Mqtt.Infrastructure.YmlConfiguration.Configuration;
 using Modbus2Mqtt.Infrastructure.YmlConfiguration.DeviceDefinition;
 
 namespace Modbus2Mqtt.Infrastructure.Mqtt
@@ -15,7 +14,7 @@ namespace Modbus2Mqtt.Infrastructure.Mqtt
 
         public string GenerateStateTopic(Slave slave, Register register)
         {
-            return $"{_configuration.Mqtt.MainTopic}/get/{StripNonAlphaNumeric(slave.Name)}/{StripNonAlphaNumeric(register.Name)}";
+            return $"{_configuration.Mqtt.MainTopic}/get/{slave.GetStrippedName()}/{register.GetStrippedName()}";
         }
 
         public string GenerateAvailabilityTopic()
@@ -27,12 +26,8 @@ namespace Modbus2Mqtt.Infrastructure.Mqtt
         public string GenerateHomeAssistantAutodiscoveryTopic(Slave slave, Register register)
         {
             return
-                $"{_configuration.HomeassistantAutoDiscoveryPrefix}/sensor/{StripNonAlphaNumeric(slave.Name)}/{StripNonAlphaNumeric(slave.Name)}-{StripNonAlphaNumeric(register.Name)}/config";
+                $"{_configuration.HomeassistantAutoDiscoveryPrefix}/sensor/{slave.GetStrippedName()}/{slave.GetStrippedName()}-{register.GetStrippedName()}/config";
         }
         
-        public static string StripNonAlphaNumeric(string input)
-        {
-            return Regex.Replace(input, @"[^a-zA-Z0-9]+", "-");
-        }
     }
 }

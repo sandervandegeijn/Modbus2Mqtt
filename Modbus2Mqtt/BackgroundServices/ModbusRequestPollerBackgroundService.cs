@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Modbus2Mqtt.Eventing.InitializeModbusRequest;
 using Modbus2Mqtt.Eventing.NewModbusRequest;
 using Modbus2Mqtt.Infrastructure.Modbus;
 using Modbus2Mqtt.Infrastructure.YmlConfiguration.Configuration;
@@ -112,7 +113,7 @@ namespace Modbus2Mqtt.BackgroundServices
             foreach (var register in registers)
             {
                 var modbusRequest = new ModbusRequest {Slave = slave, Register = register};
-                var newModbusRequestEvent = new NewModbusRequestEvent(modbusRequest);
+                var newModbusRequestEvent = new InitializeModbusRequestEvent(modbusRequest);
                 await _mediator.Publish(newModbusRequestEvent);
                 modbusRequests.Add(modbusRequest);
             }

@@ -1,13 +1,13 @@
 ﻿using MediatR;
 using Modbus2Mqtt.Infrastructure.Modbus;
 
-namespace Modbus2Mqtt.Eventing.NewModbusRequest
+namespace Modbus2Mqtt.Eventing.InitializeModbusRequest
 {
-    public class NewModbusRequestEvent : INotification
+    public class InitializeModbusRequestEvent : INotification
     {
         public ModbusRequest ModbusRequest { get; set; }
 
-        public NewModbusRequestEvent(ModbusRequest modbusRequest)
+        public InitializeModbusRequestEvent(ModbusRequest modbusRequest)
         {
             ModbusRequest = modbusRequest;
         }

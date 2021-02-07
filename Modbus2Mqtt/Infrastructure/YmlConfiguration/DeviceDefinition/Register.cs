@@ -13,5 +13,10 @@
         public string DataType { get; set; }
         
         public string Function { get; set; }
+        
+        public string GetStrippedName()
+        {
+            return Name.StripNonAlphaNumeric();
+        }
     }
 }

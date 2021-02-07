@@ -7,23 +7,24 @@ using Modbus2Mqtt.Infrastructure.Modbus;
 using Modbus2Mqtt.Infrastructure.Mqtt;
 using MQTTnet.Client;
 
-namespace Modbus2Mqtt.Eventing.NewModbusRequest
+namespace Modbus2Mqtt.Eventing.InitializeModbusRequest
 {
-    public class NewModbusRequestHomeAssistantAutodiscoveryHandler : INotificationHandler<NewModbusRequestEvent>
+    public class InitializeModbusRequestHomeAssistantAutodiscoveryHandler : INotificationHandler<InitializeModbusRequestEvent>
     {
         private readonly IMqttClient _mqttClient;
         private readonly MqttTopicGenerator _mqttTopicGenerator;
 
-        public NewModbusRequestHomeAssistantAutodiscoveryHandler(IMqttClient mqttClient, MqttTopicGenerator mqttTopicGenerator)
+        public InitializeModbusRequestHomeAssistantAutodiscoveryHandler(IMqttClient mqttClient, MqttTopicGenerator mqttTopicGenerator)
         {
             _mqttClient = mqttClient;
             _mqttTopicGenerator = mqttTopicGenerator;
         }
-        public async Task Handle(NewModbusRequestEvent newModbusRequestEvent, CancellationToken cancellationToken)
+        
+        public async Task Handle(InitializeModbusRequestEvent initializeModbusRequestEvent, CancellationToken cancellationToken)
         {
-            var message = AssembleMessage(newModbusRequestEvent.ModbusRequest);
+            var message = AssembleMessage(initializeModbusRequestEvent.ModbusRequest);
             await _mqttClient.PublishAsync(_mqttTopicGenerator.GenerateAvailabilityTopic(), "online", true);
-            await _mqttClient.PublishAsync(_mqttTopicGenerator.GenerateHomeAssistantAutodiscoveryTopic(newModbusRequestEvent.ModbusRequest.Slave, newModbusRequestEvent.ModbusRequest.Register), message, true);
+            await _mqttClient.PublishAsync(_mqttTopicGenerator.GenerateHomeAssistantAutodiscoveryTopic(initializeModbusRequestEvent.ModbusRequest.Slave, initializeModbusRequestEvent.ModbusRequest.Register), message, true);
         }
 
         private string AssembleMessage(ModbusRequest modbusRequest)

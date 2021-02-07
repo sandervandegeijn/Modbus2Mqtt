@@ -5,7 +5,7 @@ parity: none # none even mark odd space
 stopbits: 1 #0 1 1.5 2
 homeassistant_auto_discovery_prefix: "homeassistant" #default: homeassistant
 slave:
-  - name: eastron_test
+  - name: eastron Test
     type: EastronSDM120
     slave_id: 1
     polling_interval: 10000 #ms
