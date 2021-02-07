@@ -41,7 +41,7 @@ namespace Modbus2Mqtt.Eventing.InitializeModbusRequest
             var message = new Message
             {
                 UnitOfMeasurement = modbusRequest.Register.Unit,
-                Name = modbusRequest.Register.Name,
+                Name = $"{modbusRequest.Slave.Name} {modbusRequest.Register.Name}",
                 StateTopic = _mqttTopicGenerator.GenerateStateTopic(modbusRequest.Slave, modbusRequest.Register),
                 UniqueId = $"modbus2mqtt-{modbusRequest.Slave.Name}-{modbusRequest.Register.Name}",
                 Device = device, 
