@@ -14,19 +14,19 @@ namespace Modbus2Mqtt.Infrastructure.Mqtt
 
         public string GenerateStateTopic(Slave slave, Register register)
         {
-            return $"{_configuration.Mqtt.MainTopic}/get/{slave.GetStrippedName()}/{register.GetStrippedName()}";
+            return $"{_configuration.Mqtt.MainTopic.ToLower()}/get/{slave.GetStrippedName().ToLower()}/{register.GetStrippedName().ToLower()}";
         }
 
         public string GenerateAvailabilityTopic()
         {
-            return $"{_configuration.Mqtt.MainTopic}/status";
+            return $"{_configuration.Mqtt.MainTopic.ToLower()}/status";
         }
         
         
         public string GenerateHomeAssistantAutodiscoveryTopic(Slave slave, Register register)
         {
             return
-                $"{_configuration.HomeassistantAutoDiscoveryPrefix}/sensor/{slave.GetStrippedName()}/{slave.GetStrippedName()}-{register.GetStrippedName()}/config";
+                $"{_configuration.HomeassistantAutoDiscoveryPrefix}/sensor/{slave.GetStrippedName().ToLower()}/{slave.GetStrippedName().ToLower()}-{register.GetStrippedName().ToLower()}/config";
         }
         
     }
