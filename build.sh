@@ -5,12 +5,7 @@ changes=`git status | grep "Your branch is up-to-date" | wc -l`
 if [ $changes -eq 0 ]
 then
 	echo "Updating container"
-	#docker stop modbus2mqtt-9600
-
-	#docker rm modbus2mqtt-9600
-	#docker rmi modbus2mqtt
 	git pull
 	cd Modbus2Mqtt
 	docker build  --file Dockerfile -t modbus2mqtt .
-	#docker run -d --name neofotoweb --network custombridge --restart always neofotoweb
 fi
