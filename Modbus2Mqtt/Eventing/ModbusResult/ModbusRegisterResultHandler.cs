@@ -29,15 +29,28 @@ namespace Modbus2Mqtt.Eventing.ModbusResult
                 double parsedResult = 0;
                 if (registerResultEvent.Slave.DeviceDefition.Endianness.ToLower().Equals("big-endian"))
                 {
-                    parsedResult = Math.Round(ModbusClient.ConvertRegistersToFloat(registerResultEvent.Result, ModbusClient.RegisterOrder.HighLow),3);
+                    parsedResult = ModbusClient.ConvertRegistersToFloat(registerResultEvent.Result, ModbusClient.RegisterOrder.HighLow);
+                    parsedResult = Math.Round(parsedResult, CalculateNumberOfDecimals(parsedResult));
                 }
                 if (registerResultEvent.Slave.DeviceDefition.Endianness.ToLower().Equals("little-endian"))
                 {
-                    parsedResult = Math.Round(ModbusClient.ConvertRegistersToFloat(registerResultEvent.Result, ModbusClient.RegisterOrder.LowHigh), 3);
+                    parsedResult = ModbusClient.ConvertRegistersToFloat(registerResultEvent.Result, ModbusClient.RegisterOrder.LowHigh);
+                    parsedResult = Math.Round(parsedResult, CalculateNumberOfDecimals(parsedResult));
                 }
                 _logger.LogInformation("Result for: " + registerResultEvent.Slave.Name + " register: " + registerResultEvent.Register.Name +" : " + parsedResult);
                 await _mediator.Publish(new OutGoingMessageEvent {Register = registerResultEvent.Register, Slave = registerResultEvent.Slave, Message = parsedResult.ToString(CultureInfo.InvariantCulture)}, cancellationToken);
             }
+        }
+
+        private int CalculateNumberOfDecimals(double input)
+        {
+            Math.Abs(input);
+            return input switch
+            {
+                < 10 => 2,
+                < 100 => 1,
+                _ => 0
+            };
         }
     }
 }
