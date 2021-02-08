@@ -31,4 +31,4 @@ msbuild.wrn
 # Visual Studio 2015
 .vs/
 
-Modbus2Mqtt\configuration.yml
+Modbus2Mqtt/configuration.yml
