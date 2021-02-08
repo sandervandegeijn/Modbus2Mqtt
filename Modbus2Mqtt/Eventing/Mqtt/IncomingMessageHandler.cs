@@ -20,10 +20,6 @@ namespace Modbus2Mqtt.Eventing.Mqtt
         public Task Handle(IncomingMessageEvent messageEvent, CancellationToken cancellationToken)
         {
             
-            _logger.LogError("not yet supportaged");
-            return Task.CompletedTask;
-            
-            
             var splitTopic = messageEvent.Topic.Split('/');
             var slaveName = splitTopic[2];
             var registerName = splitTopic[3];
@@ -35,7 +31,7 @@ namespace Modbus2Mqtt.Eventing.Mqtt
                 NextExecutionTime = DateTime.Now
             };
             ModbusRequestQueueBackgroundService.Handle(modbusRequest);
-            
+            return Task.CompletedTask;
         }
     }
 }

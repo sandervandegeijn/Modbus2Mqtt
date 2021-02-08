@@ -25,7 +25,6 @@ namespace Modbus2Mqtt.Eventing.ModbusResult
         {
             if (registerResultEvent.Register.DataType.Equals("float"))
             {
-                //TODO implement round based on configuration
                 double parsedResult = 0;
                 if (registerResultEvent.Slave.DeviceDefition.Endianness.ToLower().Equals("big-endian"))
                 {
@@ -42,7 +41,7 @@ namespace Modbus2Mqtt.Eventing.ModbusResult
             }
         }
 
-        private int CalculateNumberOfDecimals(double input)
+        private static int CalculateNumberOfDecimals(double input)
         {
             Math.Abs(input);
             return input switch

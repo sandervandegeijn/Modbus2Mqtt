@@ -28,7 +28,7 @@ namespace Modbus2Mqtt.Infrastructure
             
             var options = new MqttClientOptionsBuilder()
                 .WithClientId(configuration.Mqtt.ClientId)
-                .WithTcpServer(configuration.Mqtt.Server)
+                .WithTcpServer(configuration.Mqtt.Server, _configuration.Mqtt.Port)
                 .WithCleanSession();
             
             if (!string.IsNullOrEmpty(configuration.Mqtt.Username) && !string.IsNullOrEmpty(configuration.Mqtt.Password) )
