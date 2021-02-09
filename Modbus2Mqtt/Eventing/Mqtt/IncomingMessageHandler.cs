@@ -22,7 +22,7 @@ namespace Modbus2Mqtt.Eventing.Mqtt
             
             var splitTopic = messageEvent.Topic.Split('/');
             var slaveName = splitTopic[2];
-            var registerName = splitTopic[3];
+                var registerName = splitTopic[3];
             
             var modbusRequest = new ModbusRequest
             {

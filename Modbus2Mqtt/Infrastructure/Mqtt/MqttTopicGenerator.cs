@@ -1,4 +1,6 @@
-﻿using Modbus2Mqtt.Infrastructure.YmlConfiguration.Configuration;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Modbus2Mqtt.Infrastructure.YmlConfiguration.Configuration;
 using Modbus2Mqtt.Infrastructure.YmlConfiguration.DeviceDefinition;
 
 namespace Modbus2Mqtt.Infrastructure.Mqtt
@@ -12,6 +14,25 @@ namespace Modbus2Mqtt.Infrastructure.Mqtt
             _configuration = configuration;
         }
 
+        public List<string> GenerateTopicsForIncomingMqttTrafficForAllSlaves()
+        {
+            var topics = new List<string>();
+            
+            foreach (var slave in _configuration.Slave)
+            {
+                var registers = (from r in slave.DeviceDefition.Registers
+                    where r.Function.StartsWith("write_")
+                    select r).ToList();
+
+                foreach (var register in registers)
+                {
+                    topics.Add($"{_configuration.Mqtt.MainTopic}/set/{slave.Name}/{register.Name}");
+                }
+            }
+
+            return topics;
+        }
+        
         public string GenerateStateTopic(Slave slave, Register register)
         {
             return $"{_configuration.Mqtt.MainTopic.ToLower()}/get/{slave.GetStrippedName().ToLower()}/{register.GetStrippedName().ToLower()}";
@@ -21,7 +42,6 @@ namespace Modbus2Mqtt.Infrastructure.Mqtt
         {
             return $"{_configuration.Mqtt.MainTopic.ToLower()}/status";
         }
-        
         
         public string GenerateHomeAssistantAutodiscoveryTopic(Slave slave, Register register)
         {
