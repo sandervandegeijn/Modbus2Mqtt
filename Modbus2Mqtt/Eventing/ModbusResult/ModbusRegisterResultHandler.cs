@@ -29,27 +29,18 @@ namespace Modbus2Mqtt.Eventing.ModbusResult
                 if (registerResultEvent.Slave.DeviceDefition.Endianness.ToLower().Equals("big-endian"))
                 {
                     parsedResult = ModbusClient.ConvertRegistersToFloat(registerResultEvent.Result, ModbusClient.RegisterOrder.HighLow);
-                    parsedResult = Math.Round(parsedResult, CalculateNumberOfDecimals(parsedResult));
+                    parsedResult = Math.Round(parsedResult, 4);
                 }
                 if (registerResultEvent.Slave.DeviceDefition.Endianness.ToLower().Equals("little-endian"))
                 {
                     parsedResult = ModbusClient.ConvertRegistersToFloat(registerResultEvent.Result, ModbusClient.RegisterOrder.LowHigh);
-                    parsedResult = Math.Round(parsedResult, CalculateNumberOfDecimals(parsedResult));
+                    parsedResult = Math.Round(parsedResult, 4);
                 }
                 _logger.LogInformation("Result for: " + registerResultEvent.Slave.Name + " register: " + registerResultEvent.Register.Name +" : " + parsedResult);
                 await _mediator.Publish(new OutGoingMessageEvent {Register = registerResultEvent.Register, Slave = registerResultEvent.Slave, Message = parsedResult.ToString(CultureInfo.InvariantCulture)}, cancellationToken);
             }
         }
 
-        private static int CalculateNumberOfDecimals(double input)
-        {
-            Math.Abs(input);
-            return input switch
-            {
-                < 10 => 2,
-                < 100 => 1,
-                _ => 0
-            };
-        }
+       
     }
 }
