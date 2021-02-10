@@ -7,5 +7,6 @@ then
 	echo "Updating container"
 	git pull
 	cd Modbus2Mqtt
+	docker rmi modbus2mqtt
 	docker build  --file Dockerfile -t modbus2mqtt .
 fi
