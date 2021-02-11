@@ -21,7 +21,10 @@ namespace Modbus2Mqtt.Infrastructure.Mqtt
             foreach (var slave in _configuration.Slave)
             {
                 var registers = (from r in slave.DeviceDefition.Registers
-                    where r.Function.StartsWith("write_")
+                    where r.Function == EnumModbusFunction.write_multiple_coils ||
+                    r.Function == EnumModbusFunction.write_multiple_holding_registers ||
+                    r.Function == EnumModbusFunction.write_single_coil ||
+                    r.Function == EnumModbusFunction.write_single_holding_register
                     select r).ToList();
 
                 foreach (var register in registers)

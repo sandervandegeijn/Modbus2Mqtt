@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Modbus2Mqtt.Eventing.ModbusResult;
 using Modbus2Mqtt.Infrastructure.Modbus;
+using Modbus2Mqtt.Infrastructure.YmlConfiguration.DeviceDefinition;
 
 namespace Modbus2Mqtt.BackgroundServices
 {
@@ -54,28 +55,28 @@ namespace Modbus2Mqtt.BackgroundServices
                     try
                     {
                         //Function code 1
-                        if (modbusRequest.Register.Function.ToLower().Equals("read_coil"))
+                        if (modbusRequest.Register.Function == EnumModbusFunction.read_coil)
                         {
                             var result = _modbusClient.ReadCoils(modbusRequest.Register.Start, modbusRequest.Register.Registers);
                             await _mediator.Publish(new ModbusCoilResultEvent {Result = result, Register = modbusRequest.Register, Slave = modbusRequest.Slave}, stoppingToken);
                         }
 
                         //Function code 2
-                        if (modbusRequest.Register.Function.ToLower().Equals("read_discrete_input"))
+                        if (modbusRequest.Register.Function == EnumModbusFunction.read_discrete_input)
                         {
                             var result = _modbusClient.ReadDiscreteInputs(modbusRequest.Register.Start, modbusRequest.Register.Registers);
                             await _mediator.Publish(new ModbusCoilResultEvent {Result = result, Register = modbusRequest.Register, Slave = modbusRequest.Slave}, stoppingToken);
                         }
 
                         //Function code 3
-                        if (modbusRequest.Register.Function.ToLower().Equals("read_holding_registers"))
+                        if (modbusRequest.Register.Function == EnumModbusFunction.read_holding_registers)
                         {
                             var result = _modbusClient.ReadHoldingRegisters(modbusRequest.Register.Start, modbusRequest.Register.Registers);
                             await _mediator.Publish(new ModbusRegisterResultEvent {Result = result, Register = modbusRequest.Register, Slave = modbusRequest.Slave}, stoppingToken);
                         }
 
                         //Function code 4
-                        if (modbusRequest.Register.Function.ToLower().Equals("read_input_registers"))
+                        if (modbusRequest.Register.Function == EnumModbusFunction.read_input_registers)
                         {
                             var result = _modbusClient.ReadInputRegisters(modbusRequest.Register.Start, modbusRequest.Register.Registers);
                             await _mediator.Publish(new ModbusRegisterResultEvent {Result = result, Register = modbusRequest.Register, Slave = modbusRequest.Slave}, stoppingToken);

@@ -1,4 +1,4 @@
-﻿namespace Modbus2Mqtt.Infrastructure.Modbus
+﻿namespace Modbus2Mqtt.Infrastructure.YmlConfiguration.DeviceDefinition
 {
     public enum EnumModbusFunction
     {

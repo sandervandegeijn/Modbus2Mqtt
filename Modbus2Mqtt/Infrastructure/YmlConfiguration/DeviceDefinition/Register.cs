@@ -12,7 +12,7 @@
         
         public string DataType { get; set; }
         
-        public string Function { get; set; }
+        public EnumModbusFunction Function { get; set; }
         
         public string GetStrippedName()
         {

@@ -107,7 +107,10 @@ namespace Modbus2Mqtt.BackgroundServices
             if (string.IsNullOrEmpty(slave.Exclude) && string.IsNullOrEmpty(slave.Include))
             {
                 registers = (from r in slave.DeviceDefition.Registers
-                    where r.Function.ToLower().StartsWith("read_")
+                    where r.Function == EnumModbusFunction.read_coil ||
+                          r.Function == EnumModbusFunction.read_discrete_input ||
+                          r.Function == EnumModbusFunction.read_holding_registers ||
+                          r.Function == EnumModbusFunction.read_input_registers
                     select r).ToList();
                 
                 registers = slave.DeviceDefition.Registers;
