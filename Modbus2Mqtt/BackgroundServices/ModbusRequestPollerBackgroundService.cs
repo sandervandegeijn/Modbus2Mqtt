@@ -99,6 +99,10 @@ namespace Modbus2Mqtt.BackgroundServices
 
             if (string.IsNullOrEmpty(slave.Exclude) && string.IsNullOrEmpty(slave.Include))
             {
+                registers = (from r in slave.DeviceDefition.Registers
+                    where r.Function.ToLower().StartsWith("read_")
+                    select r).ToList();
+                
                 registers = slave.DeviceDefition.Registers;
             }
 
