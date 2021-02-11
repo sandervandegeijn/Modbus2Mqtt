@@ -79,8 +79,8 @@ namespace Modbus2Mqtt.Infrastructure
                 {
                     await _mediator.Publish(new IncomingMessageEvent
                     {
-                        Message = e.ApplicationMessage.Payload.ToString(),
-                        Topic = e.ApplicationMessage.Topic
+                        Message = System.Text.Encoding.Default.GetString(e.ApplicationMessage.Payload),
+                        Topic = e.ApplicationMessage.Topic.ToString()
                     });
                 });
             }
