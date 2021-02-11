@@ -25,9 +25,8 @@ namespace Modbus2Mqtt.Infrastructure.YmlConfiguration
                 return Configuration;
             }
 
-            var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "configuration.yml");
-            //_logger.LogInformation("Trying to parse configuration: "+path);
-            
+            var path = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)!, "configuration.yml");
+
             var yml = File.ReadAllText(path);
             
             var deserializer = new DeserializerBuilder()
