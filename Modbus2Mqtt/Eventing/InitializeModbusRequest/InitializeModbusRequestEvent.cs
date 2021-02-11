@@ -5,11 +5,11 @@ namespace Modbus2Mqtt.Eventing.InitializeModbusRequest
 {
     public class InitializeModbusRequestEvent : INotification
     {
-        public ModbusRequest ModbusRequest { get; set; }
+        public ModbusRequest ModbusReadRequest { get; set; }
 
-        public InitializeModbusRequestEvent(ModbusRequest modbusRequest)
+        public InitializeModbusRequestEvent(ModbusRequest modbusReadRequest)
         {
-            ModbusRequest = modbusRequest;
+            ModbusReadRequest = modbusReadRequest;
         }
     }
 }

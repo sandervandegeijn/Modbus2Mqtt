@@ -3,7 +3,13 @@ endianness: big-endian #little-endian big-endian
 registers:
   - name: current 
     unit: A #post values *10, if you need 6A post 60, if you need 16A post 160.
-    data_type: float
+    data_type: integer
     start: 0x00A6
+    registers: 1
+    function: write_multiple_holding_registers #read_input_registers read_coil read_discrete_input read_holder_registers write_single_coil write_single_holding_register write_multiple_coils write_multiple_holding_registers
+  - name: access
+    unit: 
+    data_type: integer
+    start: 0x00A7
     registers: 1
     function: write_multiple_holding_registers #read_input_registers read_coil read_discrete_input read_holder_registers write_single_coil write_single_holding_register write_multiple_coils write_multiple_holding_registers

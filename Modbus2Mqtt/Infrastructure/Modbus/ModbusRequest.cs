@@ -9,6 +9,8 @@ namespace Modbus2Mqtt.Infrastructure.Modbus
         public Register Register { get; set; }
         
         public Slave Slave { get; set; }
+
+        public decimal Value { get; set; }
         
         public DateTime NextExecutionTime { get; set; }
     }

@@ -33,6 +33,9 @@
       <None Update="configuration.yml.yml.sample">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
+      <None Update="DeviceTemplates\SungrowInverters.yml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

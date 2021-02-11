@@ -1,0 +1,13 @@
+﻿# Based on 
+# https://github.com/thomasfa18/solar-sungrow/blob/master/modbus-sungrow.py
+# http://www.photovoltaicsolar.in/Sungrow_Manual/Modbus%20RS485%20RTU%20Protocol.pdf
+
+friendly_name: Sungrow inverters
+endianness: big-endian #little-endian big-endian
+registers:
+  - name: voltage
+    unit: V
+    data_type: float
+    start: 0
+    registers: 2
+    function: read_input_registers

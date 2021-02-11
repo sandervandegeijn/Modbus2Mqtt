@@ -43,11 +43,18 @@ namespace Modbus2Mqtt.BackgroundServices
 
             foreach (var slave in slaves)
             {
-                var list = GetModbusRequestListForSlave(slave);
-                foreach (var modbusRequest in await list)
+                try
                 {
-                    modbusRequest.NextExecutionTime = DateTime.Now.Add(TimeSpan.FromMilliseconds(wait));
-                    modbusRequestsList.Add(modbusRequest);
+                    var list = GetModbusRequestListForSlave(slave);
+                    foreach (var modbusRequest in await list)
+                    {
+                        modbusRequest.NextExecutionTime = DateTime.Now.Add(TimeSpan.FromMilliseconds(wait));
+                        modbusRequestsList.Add(modbusRequest);
+                    }
+                }
+                catch (ArgumentException e)
+                {
+                    _logger.LogInformation($"No registers for device {slave.Name} this could be because there is nothing to read, only to write");
                 }
 
                 wait += 2000;
@@ -106,23 +113,23 @@ namespace Modbus2Mqtt.BackgroundServices
                 registers = slave.DeviceDefition.Registers;
             }
 
-            if (registers == null || registers.Count == 0)
+            if (registers != null || registers.Count > 0)
             {
-                _logger.LogError("No registers for device " + slave.Name);
-                throw new ArgumentException($"No registers for device {slave.Name} ");
-            }
+                
+                var modbusRequests = new List<ModbusRequest>();
 
-            var modbusRequests = new List<ModbusRequest>();
+                foreach (var register in registers)
+                {
+                    var modbusRequest = new ModbusRequest {Slave = slave, Register = register};
+                    var newModbusRequestEvent = new InitializeModbusRequestEvent(modbusRequest);
+                    await _mediator.Publish(newModbusRequestEvent);
+                    modbusRequests.Add(modbusRequest);
+                }
+                
+                return modbusRequests;
+            }
             
-            foreach (var register in registers)
-            {
-                var modbusRequest = new ModbusRequest {Slave = slave, Register = register};
-                var newModbusRequestEvent = new InitializeModbusRequestEvent(modbusRequest);
-                await _mediator.Publish(newModbusRequestEvent);
-                modbusRequests.Add(modbusRequest);
-            }
-
-            return modbusRequests;
+            throw new ArgumentException($"No registers for device {slave.Name} this could be because there is nothing to read, only to write");
         }
     }
 }

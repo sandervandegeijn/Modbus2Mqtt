@@ -28,16 +28,16 @@ namespace Modbus2Mqtt.BackgroundServices
             _queue = new ConcurrentQueue<ModbusRequest>();
         }
 
-        public static void Handle(ModbusRequest modbusRequest)
+        public static void Handle(ModbusRequest modbusReadRequest)
         {
             var checkForDouble = (from q in _queue
-                where q.Slave.Name.Equals(modbusRequest.Slave.Name) &&
-                      q.Register.Start.Equals(modbusRequest.Register.Start)
+                where q.Slave.Name.Equals(modbusReadRequest.Slave.Name) &&
+                      q.Register.Start.Equals(modbusReadRequest.Register.Start)
                 select q).Count();
 
             if (checkForDouble == 0)
             {
-                _queue.Enqueue(modbusRequest);
+                _queue.Enqueue(modbusReadRequest);
                 _queue.AsParallel().OrderBy(x => x.Slave.Priority);    
             }
         }
@@ -80,6 +80,13 @@ namespace Modbus2Mqtt.BackgroundServices
                             var result = _modbusClient.ReadInputRegisters(modbusRequest.Register.Start, modbusRequest.Register.Registers);
                             await _mediator.Publish(new ModbusRegisterResultEvent {Result = result, Register = modbusRequest.Register, Slave = modbusRequest.Slave}, stoppingToken);
                         }
+                        
+                        // //Function code 16
+                        // if (modbusRequest.Register.Function.ToLower().Equals("write_multiple_holding_registers"))
+                        // {
+                        //     HandleModbusWriteRequest(modbusRequest);
+                        // }
+                        
                     }
                     catch (CRCCheckFailedException)
                     {
@@ -97,5 +104,7 @@ namespace Modbus2Mqtt.BackgroundServices
                 }
             }
         }
+        
+        
     }
 }

@@ -22,28 +22,28 @@ namespace Modbus2Mqtt.Eventing.InitializeModbusRequest
         
         public async Task Handle(InitializeModbusRequestEvent initializeModbusRequestEvent, CancellationToken cancellationToken)
         {
-            var message = AssembleMessage(initializeModbusRequestEvent.ModbusRequest);
+            var message = AssembleMessage(initializeModbusRequestEvent.ModbusReadRequest);
             await _mqttClient.PublishAsync(_mqttTopicGenerator.GenerateAvailabilityTopic(), "online", true);
-            await _mqttClient.PublishAsync(_mqttTopicGenerator.GenerateHomeAssistantAutodiscoveryTopic(initializeModbusRequestEvent.ModbusRequest.Slave, initializeModbusRequestEvent.ModbusRequest.Register), message, true);
+            await _mqttClient.PublishAsync(_mqttTopicGenerator.GenerateHomeAssistantAutodiscoveryTopic(initializeModbusRequestEvent.ModbusReadRequest.Slave, initializeModbusRequestEvent.ModbusReadRequest.Register), message, true);
         }
 
-        private string AssembleMessage(ModbusRequest modbusRequest)
+        private string AssembleMessage(ModbusRequest modbusReadRequest)
         {
             var device = new Device
             {
-                Identifiers = $"modbus2mqtt-{modbusRequest.Slave.Name}",
-                Name = modbusRequest.Slave.Name,
+                Identifiers = $"modbus2mqtt-{modbusReadRequest.Slave.Name}",
+                Name = modbusReadRequest.Slave.Name,
                 Manufacturer = "Modbus2Mqtt",
-                Model = modbusRequest.Slave.Name,
+                Model = modbusReadRequest.Slave.Name,
                 SoftwareVersion = "1.0"
             };
 
             var message = new Message
             {
-                UnitOfMeasurement = modbusRequest.Register.Unit,
-                Name = $"{modbusRequest.Slave.Name} {modbusRequest.Register.Name}",
-                StateTopic = _mqttTopicGenerator.GenerateStateTopic(modbusRequest.Slave, modbusRequest.Register),
-                UniqueId = $"modbus2mqtt-{modbusRequest.Slave.Name}-{modbusRequest.Register.Name}",
+                UnitOfMeasurement = modbusReadRequest.Register.Unit,
+                Name = $"{modbusReadRequest.Slave.Name} {modbusReadRequest.Register.Name}",
+                StateTopic = _mqttTopicGenerator.GenerateStateTopic(modbusReadRequest.Slave, modbusReadRequest.Register),
+                UniqueId = $"modbus2mqtt-{modbusReadRequest.Slave.Name}-{modbusReadRequest.Register.Name}",
                 Device = device, 
                 Icon = "mdi:leak",
                 AvailabilityTopic = _mqttTopicGenerator.GenerateAvailabilityTopic()
