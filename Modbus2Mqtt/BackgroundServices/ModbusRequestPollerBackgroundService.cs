@@ -113,7 +113,6 @@ namespace Modbus2Mqtt.BackgroundServices
                           r.Function == EnumModbusFunction.read_input_registers
                     select r).ToList();
                 
-                registers = slave.DeviceDefition.Registers;
             }
 
             if (registers != null || registers.Count > 0)
