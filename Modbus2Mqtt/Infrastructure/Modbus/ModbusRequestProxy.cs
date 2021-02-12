@@ -30,50 +30,53 @@ namespace Modbus2Mqtt.Infrastructure.Modbus
                 _modbusClient.UnitIdentifier = Convert.ToByte(modbusRequest.Slave.SlaveId);
                 try
                 {
-                    if (modbusRequest.Register.Function == EnumModbusFunction.read_coil)
+                    switch (modbusRequest.Register.Function)
                     {
-                        var result = _modbusClient.ReadCoils(modbusRequest.Register.Start, modbusRequest.Register.Registers);
-                        await _mediator.Publish(new ModbusCoilResultEvent {Result = result, Register = modbusRequest.Register, Slave = modbusRequest.Slave}, stoppingToken);
+                        case EnumModbusFunction.read_coil:
+                        {
+                            var result = _modbusClient.ReadCoils(modbusRequest.Register.Start, modbusRequest.Register.Registers);
+                            await _mediator.Publish(new ModbusCoilResultEvent {Result = result, Register = modbusRequest.Register, Slave = modbusRequest.Slave}, stoppingToken);
+                            break;
+                        }
+                        case EnumModbusFunction.read_discrete_input:
+                        {
+                            var result = _modbusClient.ReadDiscreteInputs(modbusRequest.Register.Start, modbusRequest.Register.Registers);
+                            await _mediator.Publish(new ModbusCoilResultEvent {Result = result, Register = modbusRequest.Register, Slave = modbusRequest.Slave}, stoppingToken);
+                            break;
+                        }
+                        case EnumModbusFunction.read_holding_registers:
+                        {
+                            var result = _modbusClient.ReadHoldingRegisters(modbusRequest.Register.Start, modbusRequest.Register.Registers);
+                            await _mediator.Publish(new ModbusRegisterResultEvent {Result = result, Register = modbusRequest.Register, Slave = modbusRequest.Slave}, stoppingToken);
+                            break;
+                        }
+                        case EnumModbusFunction.read_input_registers:
+                        {
+                            var result = _modbusClient.ReadInputRegisters(modbusRequest.Register.Start, modbusRequest.Register.Registers);
+                            await _mediator.Publish(new ModbusRegisterResultEvent {Result = result, Register = modbusRequest.Register, Slave = modbusRequest.Slave}, stoppingToken);
+                            break;
+                        }
+                        case EnumModbusFunction.write_single_coil:
+                        {
+                            _modbusClient.WriteSingleCoil(modbusRequest.Register.Start, Convert.ToBoolean(modbusRequest.Value));
+                            break;
+                        }
+                        case EnumModbusFunction.write_single_holding_register:
+                        {
+                            _modbusClient.WriteSingleRegister(modbusRequest.Register.Start, Convert.ToInt32(modbusRequest.Value));
+                            break;
+                        }
+                        case EnumModbusFunction.write_multiple_coils:
+                        {
+                            _modbusClient.WriteMultipleCoils(modbusRequest.Register.Start, new bool[] {Convert.ToBoolean(modbusRequest.Value)});
+                            break;
+                        }
+                        case EnumModbusFunction.write_multiple_holding_registers:
+                        {
+                            _modbusClient.WriteMultipleRegisters(modbusRequest.Register.Start, new int[] {Convert.ToInt32(modbusRequest.Value)});
+                            break;
+                        }
                     }
-                    
-                    if (modbusRequest.Register.Function == EnumModbusFunction.read_discrete_input)
-                    {
-                        var result = _modbusClient.ReadDiscreteInputs(modbusRequest.Register.Start, modbusRequest.Register.Registers);
-                        await _mediator.Publish(new ModbusCoilResultEvent {Result = result, Register = modbusRequest.Register, Slave = modbusRequest.Slave}, stoppingToken);
-                    }
-                    
-                    if (modbusRequest.Register.Function == EnumModbusFunction.read_holding_registers)
-                    {
-                        var result = _modbusClient.ReadHoldingRegisters(modbusRequest.Register.Start, modbusRequest.Register.Registers);
-                        await _mediator.Publish(new ModbusRegisterResultEvent {Result = result, Register = modbusRequest.Register, Slave = modbusRequest.Slave}, stoppingToken);
-                    }
-                    
-                    if (modbusRequest.Register.Function == EnumModbusFunction.read_input_registers)
-                    {
-                        var result = _modbusClient.ReadInputRegisters(modbusRequest.Register.Start, modbusRequest.Register.Registers);
-                        await _mediator.Publish(new ModbusRegisterResultEvent {Result = result, Register = modbusRequest.Register, Slave = modbusRequest.Slave}, stoppingToken);
-                    }
-
-                    if (modbusRequest.Register.Function == EnumModbusFunction.write_single_coil)
-                    {
-                        _modbusClient.WriteSingleCoil(modbusRequest.Register.Start, Convert.ToBoolean(modbusRequest.Value));
-                    }
-                    
-                    if (modbusRequest.Register.Function == EnumModbusFunction.write_single_holding_register)
-                    {
-                        _modbusClient.WriteSingleRegister(modbusRequest.Register.Start, Convert.ToInt32(modbusRequest.Value));
-                    }
-                    
-                    if (modbusRequest.Register.Function == EnumModbusFunction.write_multiple_coils)
-                    {
-                        _modbusClient.WriteMultipleCoils(modbusRequest.Register.Start, new bool[] {Convert.ToBoolean(modbusRequest.Value)});
-                    }
-
-                    if (modbusRequest.Register.Function == EnumModbusFunction.write_multiple_holding_registers)
-                    {
-                        _modbusClient.WriteMultipleRegisters(modbusRequest.Register.Start, new int[] {Convert.ToInt32(modbusRequest.Value)});
-                    }
-                        
                 }
                 catch (CRCCheckFailedException)
                 {
