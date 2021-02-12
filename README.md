@@ -1,9 +1,5 @@
 Modbus2Mqtt
 
-Reading of ModbusRTU data is working, writing from MQTT to modbus still has te be implemented. On Linux however it suffering from a seriously malfunctioning System.IO implementation in .NET core as referenced here: https://github.com/dotnet/runtime/issues/2379 This is resulting in high cpu usage and some stability problems. Have not found an alternative yet....
+This solution has been based on the architecture and ideas of zigbee2mqtt. It uses device templates (see the DeviceTemplates folder) to easilly configure (see configuration.yml.sample) the devices. They will be exposed on mqtt based on the settings and are available through auto discovery in HomeAssistant. It works on both Windows and Linux.
 
-----
-
-Device definitions are in the DeviceTemplates folder, it is quite easy to add other device types.
-Reference the filename in the configuration.yml as shown in the examples.
-Dockerfile can be used to build an image for Docker, this works.
+There is one caveat: the crappy implementation of the System.IO.Ports Serial port in the .NET framework. This does result in errors and relatively high cpu usage, but running it in docker takes care of this somewhat. If you like the solution but are experiencing problems with serial please post here: https://github.com/dotnet/runtime/issues/2379
