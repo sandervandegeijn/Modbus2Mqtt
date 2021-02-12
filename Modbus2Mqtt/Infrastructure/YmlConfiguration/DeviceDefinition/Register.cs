@@ -16,7 +16,7 @@
         
         public string GetStrippedName()
         {
-            return Name.StripNonAlphaNumeric();
+            return Name.StripNonAlphaNumeric().ToLower();
         }
     }
 }

@@ -29,7 +29,7 @@ namespace Modbus2Mqtt.Infrastructure.Mqtt
 
                 foreach (var register in registers)
                 {
-                    topics.Add($"{_configuration.Mqtt.MainTopic}/set/{slave.Name}/{register.Name}");
+                    topics.Add($"{_configuration.Mqtt.MainTopic}/set/{slave.GetStrippedName()}/{register.GetStrippedName()}");
                 }
             }
 
@@ -38,7 +38,7 @@ namespace Modbus2Mqtt.Infrastructure.Mqtt
         
         public string GenerateStateTopic(Slave slave, Register register)
         {
-            return $"{_configuration.Mqtt.MainTopic.ToLower()}/get/{slave.GetStrippedName().ToLower()}/{register.GetStrippedName().ToLower()}";
+            return $"{_configuration.Mqtt.MainTopic.ToLower()}/get/{slave.GetStrippedName()}/{register.GetStrippedName()}";
         }
 
         public string GenerateAvailabilityTopic()
@@ -49,7 +49,7 @@ namespace Modbus2Mqtt.Infrastructure.Mqtt
         public string GenerateHomeAssistantAutodiscoveryTopic(Slave slave, Register register)
         {
             return
-                $"{_configuration.HomeassistantAutoDiscoveryPrefix}/sensor/{slave.GetStrippedName().ToLower()}/{slave.GetStrippedName().ToLower()}-{register.GetStrippedName().ToLower()}/config";
+                $"{_configuration.HomeassistantAutoDiscoveryPrefix}/sensor/{slave.GetStrippedName()}/{slave.GetStrippedName()}-{register.GetStrippedName()}/config";
         }
         
     }
