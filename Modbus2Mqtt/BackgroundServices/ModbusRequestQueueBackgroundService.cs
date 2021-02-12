@@ -18,26 +18,25 @@ namespace Modbus2Mqtt.BackgroundServices
     {
         private readonly ModbusRequestProxy _modbusRequestProxy;
         private readonly ILogger<ModbusRequestQueueBackgroundService> _logger;
-        private static ConcurrentQueue<ModbusRequest> _queue;
+        private static ConcurrentDictionary<Guid, ModbusRequest> _queue;
 
         public ModbusRequestQueueBackgroundService(ModbusRequestProxy modbusRequestProxy,ILogger<ModbusRequestQueueBackgroundService> logger)
         {
             _modbusRequestProxy = modbusRequestProxy;
             _logger = logger;
-            _queue = new ConcurrentQueue<ModbusRequest>();
+            _queue = new ConcurrentDictionary<Guid, ModbusRequest>();
         }
 
         public static void Handle(ModbusRequest modbusReadRequest)
         {
             var checkForDouble = (from q in _queue
-                where q.Slave.Name.Equals(modbusReadRequest.Slave.Name) &&
-                      q.Register.Start.Equals(modbusReadRequest.Register.Start)
+                where q.Value.Slave.Name.Equals(modbusReadRequest.Slave.Name) &&
+                      q.Value.Register.Start.Equals(modbusReadRequest.Register.Start)
                 select q).Count();
 
             if (checkForDouble == 0)
             {
-                _queue.Enqueue(modbusReadRequest);
-                _queue.AsParallel().OrderBy(x => x.Slave.Priority);    
+                _queue.TryAdd(Guid.NewGuid(), modbusReadRequest);
             }
         }
 
@@ -46,8 +45,16 @@ namespace Modbus2Mqtt.BackgroundServices
             while (!stoppingToken.IsCancellationRequested)
             {
                 _logger.LogDebug("Items in queue:" + _queue.Count);
-                _queue.TryDequeue(out var modbusRequest);
-                await _modbusRequestProxy.SendModbusRequest(modbusRequest, stoppingToken);
+                
+                if (!_queue.IsEmpty)
+                {
+                    var modbusRequest = (from m in _queue
+                        orderby m.Value.Slave.Priority, m.Value.NextExecutionTime
+                        select m).First();
+
+                    await _modbusRequestProxy.SendModbusRequest(modbusRequest.Value, stoppingToken);
+                    _queue.TryRemove(modbusRequest);
+                }
 
                 if (_queue.IsEmpty)
                 {
