@@ -1,4 +1,4 @@
-*Modbus2Mqtt*
+**Modbus2Mqtt**
 
 This solution has been based on the architecture and ideas of zigbee2mqtt. It uses device templates (see the DeviceTemplates folder) to easilly configure (see configuration.yml.sample) the devices. They will be exposed on mqtt based on the settings and are available through auto discovery in HomeAssistant. It works on both Windows and Linux.
 
