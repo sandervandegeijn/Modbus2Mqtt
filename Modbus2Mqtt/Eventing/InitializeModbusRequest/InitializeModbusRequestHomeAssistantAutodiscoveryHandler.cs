@@ -1,10 +1,12 @@
-﻿using System.Text.Json;
+﻿using System;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Modbus2Mqtt.Eventing.NewModbusRequest.HomeAssistantAutodiscovery;
 using Modbus2Mqtt.Infrastructure.Modbus;
 using Modbus2Mqtt.Infrastructure.Mqtt;
+using Modbus2Mqtt.Infrastructure.YmlConfiguration.Configuration;
 using MQTTnet.Client;
 
 namespace Modbus2Mqtt.Eventing.InitializeModbusRequest
@@ -13,18 +15,23 @@ namespace Modbus2Mqtt.Eventing.InitializeModbusRequest
     {
         private readonly IMqttClient _mqttClient;
         private readonly MqttTopicGenerator _mqttTopicGenerator;
+        private readonly Configuration _configuration;
 
-        public InitializeModbusRequestHomeAssistantAutodiscoveryHandler(IMqttClient mqttClient, MqttTopicGenerator mqttTopicGenerator)
+        public InitializeModbusRequestHomeAssistantAutodiscoveryHandler(IMqttClient mqttClient, MqttTopicGenerator mqttTopicGenerator, Configuration configuration)
         {
             _mqttClient = mqttClient;
             _mqttTopicGenerator = mqttTopicGenerator;
+            _configuration = configuration;
         }
         
         public async Task Handle(InitializeModbusRequestEvent initializeModbusRequestEvent, CancellationToken cancellationToken)
         {
-            var message = AssembleMessage(initializeModbusRequestEvent.ModbusReadRequest);
-            await _mqttClient.PublishAsync(_mqttTopicGenerator.GenerateAvailabilityTopic(), "online", true);
-            await _mqttClient.PublishAsync(_mqttTopicGenerator.GenerateHomeAssistantAutodiscoveryTopic(initializeModbusRequestEvent.ModbusReadRequest.Slave, initializeModbusRequestEvent.ModbusReadRequest.Register), message, true);
+            if (!string.IsNullOrEmpty(_configuration.HomeassistantAutoDiscoveryPrefix))
+            {
+                var message = AssembleMessage(initializeModbusRequestEvent.ModbusReadRequest);
+                await _mqttClient.PublishAsync(_mqttTopicGenerator.GenerateAvailabilityTopic(), "online", true);
+                await _mqttClient.PublishAsync(_mqttTopicGenerator.GenerateHomeAssistantAutodiscoveryTopic(initializeModbusRequestEvent.ModbusReadRequest.Slave, initializeModbusRequestEvent.ModbusReadRequest.Register), message, true);
+            }
         }
 
         private string AssembleMessage(ModbusRequest modbusReadRequest)
