@@ -52,7 +52,7 @@ namespace Modbus2Mqtt.BackgroundServices
                         modbusRequestsList.Add(modbusRequest);
                     }
                 }
-                catch (ArgumentException e)
+                catch (ArgumentException)
                 {
                     _logger.LogInformation($"No registers for device {slave.Name} this could be because there is nothing to read, only to write");
                 }
