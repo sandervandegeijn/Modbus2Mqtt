@@ -8,13 +8,13 @@
 
     <ItemGroup>
       <PackageReference Include="EasyModbusTCP" Version="5.6.0" />
-      <PackageReference Include="Lamar" Version="5.0.2" />
-      <PackageReference Include="Lamar.Microsoft.DependencyInjection" Version="5.0.2" />
+      <PackageReference Include="Lamar" Version="5.0.3" />
+      <PackageReference Include="Lamar.Microsoft.DependencyInjection" Version="5.0.3" />
       <PackageReference Include="MediatR" Version="9.0.0" />
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
-      <PackageReference Include="MQTTnet" Version="3.0.14" />
-      <PackageReference Include="System.IO.Ports" Version="5.0.0" />
-      <PackageReference Include="YamlDotNet" Version="9.1.5-issue-templates-0002" />
+      <PackageReference Include="MQTTnet" Version="3.0.15" />
+      <PackageReference Include="System.IO.Ports" Version="5.0.1" />
+      <PackageReference Include="YamlDotNet" Version="9.1.4" />
     </ItemGroup>
 
     <ItemGroup>
