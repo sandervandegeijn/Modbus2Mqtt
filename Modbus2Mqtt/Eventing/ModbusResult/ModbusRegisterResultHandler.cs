@@ -37,15 +37,15 @@ namespace Modbus2Mqtt.Eventing.ModbusResult
                     parsedResult = Math.Round(parsedResult, registerResultEvent.Register.Decimals);
                 }
 
-                if (Convert.ToDecimal(parsedResult) < registerResultEvent.Register.MaxValue)
-                {
+                // if (Convert.ToDecimal(parsedResult) < registerResultEvent.Register.MaxValue)
+                // {
                     _logger.LogInformation($"Result for: {registerResultEvent.Slave.Name}  register: {registerResultEvent.Register.Name}  parsedResult");
                     await _mediator.Publish(new OutGoingMessageEvent {Register = registerResultEvent.Register, Slave = registerResultEvent.Slave, Message = parsedResult.ToString(CultureInfo.InvariantCulture)}, cancellationToken);
-                }
-                else
-                {
-                    _logger.LogError($"Max value exceeded for: {registerResultEvent.Slave.Name}  register: {registerResultEvent.Register.Name}  parsedResult");
-                }
+                    // }
+                    // else
+                    // {
+                    //     _logger.LogError($"Max value exceeded for: {registerResultEvent.Slave.Name}  register: {registerResultEvent.Register.Name}  parsedResult");
+                    // }
  
             }
         }
