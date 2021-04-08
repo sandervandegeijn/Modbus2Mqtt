@@ -16,6 +16,8 @@
         
         public int Decimals { get; set; }
         
+        public decimal MaxValue { get; set; }
+        
         public string GetStrippedName()
         {
             return Name.StripNonAlphaNumeric().ToLower();

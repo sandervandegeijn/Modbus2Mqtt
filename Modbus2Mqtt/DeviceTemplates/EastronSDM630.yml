@@ -50,6 +50,7 @@ registers:
     registers: 2
     function: read_input_registers
     decimals: 2
+    max_value: 22000
   - name: phase 2 power
     unit: W
     data_type: float
@@ -57,6 +58,7 @@ registers:
     registers: 2
     function: read_input_registers
     decimals: 2
+    max_value: 22000
   - name: phase 3 power
     unit: W
     data_type: float
@@ -64,6 +66,7 @@ registers:
     registers: 2
     function: read_input_registers
     decimals: 2
+    max_value: 22000
   - name: phase 1 volt amps
     unit: VA
     data_type: float

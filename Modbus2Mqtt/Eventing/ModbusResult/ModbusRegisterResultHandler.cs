@@ -36,8 +36,17 @@ namespace Modbus2Mqtt.Eventing.ModbusResult
                     parsedResult = ModbusClient.ConvertRegistersToFloat(registerResultEvent.Result, ModbusClient.RegisterOrder.LowHigh);
                     parsedResult = Math.Round(parsedResult, registerResultEvent.Register.Decimals);
                 }
-                _logger.LogInformation("Result for: " + registerResultEvent.Slave.Name + " register: " + registerResultEvent.Register.Name +" : " + parsedResult);
-                await _mediator.Publish(new OutGoingMessageEvent {Register = registerResultEvent.Register, Slave = registerResultEvent.Slave, Message = parsedResult.ToString(CultureInfo.InvariantCulture)}, cancellationToken);
+
+                if (Convert.ToDecimal(parsedResult) < registerResultEvent.Register.MaxValue)
+                {
+                    _logger.LogInformation($"Result for: {registerResultEvent.Slave.Name}  register: {registerResultEvent.Register.Name}  parsedResult");
+                    await _mediator.Publish(new OutGoingMessageEvent {Register = registerResultEvent.Register, Slave = registerResultEvent.Slave, Message = parsedResult.ToString(CultureInfo.InvariantCulture)}, cancellationToken);
+                }
+                else
+                {
+                    _logger.LogError($"Max value exceeded for: {registerResultEvent.Slave.Name}  register: {registerResultEvent.Register.Name}  parsedResult");
+                }
+ 
             }
         }
 
