@@ -14,14 +14,11 @@
       <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
       <PackageReference Include="MQTTnet" Version="3.0.15" />
       <PackageReference Include="System.IO.Ports" Version="5.0.1" />
-      <PackageReference Include="YamlDotNet" Version="9.1.4" />
+      <PackageReference Include="YamlDotNet" Version="11.0.1" />
     </ItemGroup>
 
     <ItemGroup>
       <None Update="configuration.yml">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="Nlog.config">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="DeviceTemplates\*">
@@ -31,9 +28,6 @@
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
       <None Update="configuration.yml.yml.sample">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-      <None Update="DeviceTemplates\SungrowInverters.yml">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>
     </ItemGroup>

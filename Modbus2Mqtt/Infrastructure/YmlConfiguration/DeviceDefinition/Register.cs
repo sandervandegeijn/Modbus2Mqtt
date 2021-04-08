@@ -14,6 +14,8 @@
         
         public EnumModbusFunction Function { get; set; }
         
+        public int Decimals { get; set; }
+        
         public string GetStrippedName()
         {
             return Name.StripNonAlphaNumeric().ToLower();

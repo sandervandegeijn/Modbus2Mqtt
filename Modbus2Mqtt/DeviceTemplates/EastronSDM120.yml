@@ -7,117 +7,137 @@ registers:
     start: 0
     registers: 2
     function: read_input_registers #read_input_registers read_coil read_discrete_input read_holding_registers write_single_coil write_single_holding_register write_multiple_coils write_multiple_holding_registers
+    decimals: 2
   - name: current
     unit: A
     data_type: float
     start: 6
     registers: 2
     function: read_input_registers
+    decimals: 2
   - name: active power
     unit: W
     data_type: float
     start: 12
     registers: 2
     function: read_input_registers
+    decimals: 2
   - name: apparent power
     unit: VA
     data_type: float
     start: 18
     registers: 2
     function: read_input_registers
+    decimals: 2
   - name: reactive power
     unit: VAr
     data_type: float
     start: 14
     registers: 2
     function: read_input_registers
+    decimals: 2
   - name: frequency
     unit: Hz
     data_type: float
     start: 70
     registers: 2
     function: read_input_registers
+    decimals: 2
   - name: import active energy
     unit: kWh
     data_type: float
     start: 72
     registers: 2
     function: read_input_registers
+    decimals: 2
   - name: export active energy
     unit: kWh
     data_type: float
     start: 74
     registers: 2
     function: read_input_registers
+    decimals: 2
   - name: import reactive energy
     unit: kvarh
     data_type: float
     start: 76
     registers: 2
     function: read_input_registers
+    decimals: 2
   - name: export reactive energy
     unit: kvarh
     data_type: float
     start: 78
     registers: 2
     function: read_input_registers
+    decimals: 2
   - name: total system power demand
     unit: W
     data_type: float
     start: 84
     registers: 2
     function: read_input_registers
+    decimals: 2
   - name: maximum total system power demand
     unit: W
     data_type: float
     start: 86
     registers: 2
     function: read_input_registers
+    decimals: 2
   - name: import system power demand
     unit: W
     data_type: float
     start: 88
     registers: 2
     function: read_input_registers
+    decimals: 2
   - name: maximum import system power demand
     unit: W
     data_type: float
     start: 90
     registers: 2
     function: read_input_registers
+    decimals: 2
   - name: export system power demand
     unit: W
     data_type: float
     start: 92
     registers: 2
     function: read_input_registers
+    decimals: 2
   - name: maximum export system power demand
     unit: W
     data_type: float
     start: 94
     registers: 2
     function: read_input_registers
+    decimals: 2
   - name: current demand
     unit: A
     data_type: float
     start: 258
     registers: 2
     function: read_input_registers
+    decimals: 2
   - name: maximum current demand
     unit: A
     data_type: float
     start: 264
     registers: 2
     function: read_input_registers
+    decimals: 2
   - name: total active energy
     unit: kWh
     data_type: float
     start: 342
     registers: 2
     function: read_input_registers
+    decimals: 2
   - name: total reactive energy
     unit: Kvarh
     data_type: float
     start: 344
     registers: 2
     function: read_input_registers
+    decimals: 2

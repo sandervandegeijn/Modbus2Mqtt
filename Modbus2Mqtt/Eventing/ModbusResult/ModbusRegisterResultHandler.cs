@@ -29,12 +29,12 @@ namespace Modbus2Mqtt.Eventing.ModbusResult
                 if (registerResultEvent.Slave.DeviceDefition.Endianness.ToLower().Equals("big-endian"))
                 {
                     parsedResult = ModbusClient.ConvertRegistersToFloat(registerResultEvent.Result, ModbusClient.RegisterOrder.HighLow);
-                    parsedResult = Math.Round(parsedResult, 4);
+                    parsedResult = Math.Round(parsedResult, registerResultEvent.Register.Decimals);
                 }
                 if (registerResultEvent.Slave.DeviceDefition.Endianness.ToLower().Equals("little-endian"))
                 {
                     parsedResult = ModbusClient.ConvertRegistersToFloat(registerResultEvent.Result, ModbusClient.RegisterOrder.LowHigh);
-                    parsedResult = Math.Round(parsedResult, 4);
+                    parsedResult = Math.Round(parsedResult, registerResultEvent.Register.Decimals);
                 }
                 _logger.LogInformation("Result for: " + registerResultEvent.Slave.Name + " register: " + registerResultEvent.Register.Name +" : " + parsedResult);
                 await _mediator.Publish(new OutGoingMessageEvent {Register = registerResultEvent.Register, Slave = registerResultEvent.Slave, Message = parsedResult.ToString(CultureInfo.InvariantCulture)}, cancellationToken);

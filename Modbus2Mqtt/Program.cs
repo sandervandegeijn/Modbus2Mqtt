@@ -36,10 +36,15 @@ namespace Modbus2Mqtt
                     services.AddOptions();
                     services.AddHostedService<ModbusRequestQueueBackgroundService>();
                     services.AddHostedService<ModbusRequestPollerBackgroundService>();
-                })
-                .ConfigureLogging((hostingContext, logging) => {
-                    logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
-                    logging.AddConsole();
+                    services.AddLogging(logging =>
+                    {
+                        logging.AddConfiguration(hostContext.Configuration.GetSection("Logging"));
+                        logging.AddConsole(c =>
+                        {
+                            c.TimestampFormat = "[yyyy-MM-dd HH:mm:ss] ";
+                        });
+                        logging.AddDebug();
+                    });
                 });
 
             await builder.RunConsoleAsync();
