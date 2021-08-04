@@ -53,8 +53,27 @@ namespace Modbus2Mqtt.Eventing.InitializeModbusRequest
                 UniqueId = $"modbus2mqtt-{modbusReadRequest.Slave.Name}-{modbusReadRequest.Register.Name}",
                 Device = device, 
                 Icon = "mdi:leak",
-                AvailabilityTopic = _mqttTopicGenerator.GenerateAvailabilityTopic()
+                AvailabilityTopic = _mqttTopicGenerator.GenerateAvailabilityTopic(),
+                StateClass = "measurement"
             };
+
+            if (modbusReadRequest.Register.Unit.Equals("W") || modbusReadRequest.Register.Unit.Equals("kW"))
+            {
+                message.DeviceClass = "power";
+            }
+            if (modbusReadRequest.Register.Unit.Equals("Wh") || modbusReadRequest.Register.Unit.Equals("kWh"))
+            {
+                message.DeviceClass = "energy";
+            }
+            if (modbusReadRequest.Register.Unit.Equals("A"))
+            {
+                message.DeviceClass = "current";
+            }
+            if (modbusReadRequest.Register.Unit.Equals("V"))
+            {
+                message.DeviceClass = "voltage";
+            }
+            
 
             return JsonSerializer.Serialize(message);
         }
