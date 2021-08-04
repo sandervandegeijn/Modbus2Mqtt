@@ -57,25 +57,32 @@ namespace Modbus2Mqtt.Eventing.InitializeModbusRequest
                 StateClass = "measurement"
             };
 
-            if (modbusReadRequest.Register.Unit.Equals("W") || modbusReadRequest.Register.Unit.Equals("kW"))
+            switch (modbusReadRequest.Register.Unit)
             {
-                message.DeviceClass = "power";
+                case "W":
+                case "kW":
+                    message.DeviceClass = "power";
+                    break;
+                case "Wh":
+                case "kWh":
+                    message.DeviceClass = "energy";
+                    break;
+                case "A":
+                    message.DeviceClass = "current";
+                    break;
+                case "V":
+                    message.DeviceClass = "voltage";
+                    break;
+                default:
+                    message.DeviceClass = null;
+                    break;
             }
-            if (modbusReadRequest.Register.Unit.Equals("Wh") || modbusReadRequest.Register.Unit.Equals("kWh"))
-            {
-                message.DeviceClass = "energy";
-            }
-            if (modbusReadRequest.Register.Unit.Equals("A"))
-            {
-                message.DeviceClass = "current";
-            }
-            if (modbusReadRequest.Register.Unit.Equals("V"))
-            {
-                message.DeviceClass = "voltage";
-            }
-            
 
-            return JsonSerializer.Serialize(message);
+
+            return JsonSerializer.Serialize(message, new JsonSerializerOptions
+            {
+                IgnoreNullValues = true
+            });
         }
         
         

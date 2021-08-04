@@ -21,14 +21,16 @@ namespace Modbus2Mqtt.Eventing.NewModbusRequest.HomeAssistantAutodiscovery
         
         [JsonPropertyName("unique_id")]
         public string UniqueId { get; set; }
-        
-        [JsonPropertyName("device")]
-        public Device Device { get; set; }
-        
+ 
         [JsonPropertyName("device_class")]
         public string DeviceClass { get; set; }
         
         [JsonPropertyName("state_class")]
         public string StateClass { get; set; }
+
+        [JsonPropertyName("device")]
+        public Device Device { get; set; }
+        
+ 
     }
 }
