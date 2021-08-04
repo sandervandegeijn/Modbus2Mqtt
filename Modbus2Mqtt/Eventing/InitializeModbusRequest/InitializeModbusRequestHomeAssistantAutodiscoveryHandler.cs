@@ -63,10 +63,10 @@ namespace Modbus2Mqtt.Eventing.InitializeModbusRequest
                 case "W":
                 case "kW":
                     message.DeviceClass = "power";
-                    message.LastReset = 0;
                     break;
                 case "Wh":
                 case "kWh":
+                    message.LastReset = 0;
                     message.DeviceClass = "energy";
                     break;
                 case "A":
