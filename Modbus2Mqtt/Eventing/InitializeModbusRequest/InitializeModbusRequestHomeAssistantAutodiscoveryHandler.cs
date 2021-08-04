@@ -54,7 +54,8 @@ namespace Modbus2Mqtt.Eventing.InitializeModbusRequest
                 Device = device, 
                 Icon = "mdi:leak",
                 AvailabilityTopic = _mqttTopicGenerator.GenerateAvailabilityTopic(),
-                StateClass = "measurement"
+                StateClass = "measurement",
+                LastReset = null
             };
 
             switch (modbusReadRequest.Register.Unit)
@@ -62,6 +63,7 @@ namespace Modbus2Mqtt.Eventing.InitializeModbusRequest
                 case "W":
                 case "kW":
                     message.DeviceClass = "power";
+                    message.LastReset = 0;
                     break;
                 case "Wh":
                 case "kWh":

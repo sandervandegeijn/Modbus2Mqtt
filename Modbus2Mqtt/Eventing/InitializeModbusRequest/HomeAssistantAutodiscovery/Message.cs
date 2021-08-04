@@ -27,6 +27,9 @@ namespace Modbus2Mqtt.Eventing.NewModbusRequest.HomeAssistantAutodiscovery
         
         [JsonPropertyName("state_class")]
         public string StateClass { get; set; }
+        
+        [JsonPropertyName("last_reset")]
+        public int? LastReset { get; set; }
 
         [JsonPropertyName("device")]
         public Device Device { get; set; }
