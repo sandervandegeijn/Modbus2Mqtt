@@ -23,7 +23,7 @@ namespace Modbus2Mqtt.Eventing.Mqtt
         
         public async Task Handle(OutGoingMessageEvent messageEvent, CancellationToken cancellationToken)
         {
-            await _mqttClient.PublishAsync(_mqttTopicGenerator.GenerateStateTopic(messageEvent.Slave, messageEvent.Register), messageEvent.Message);
+            await _mqttClient.PublishAsync(_mqttTopicGenerator.GenerateStateTopic(messageEvent.Slave, messageEvent.Register), messageEvent.Message, true);
         }
     }
 }
